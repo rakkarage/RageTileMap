@@ -1,0 +1,12 @@
+bin/
+Temp/
+Obj/
+Library/
+Roslyn/
+UnityVS*
+.vs/
+.vscode/
+*.suo
+*.sln
+*.csproj
+*log.txt
