@@ -70,7 +70,6 @@ namespace HenrySoftware.Rage
 			return (x >= 0 + edge) && (y >= 0 + edge) &&
 				(x < Map.Width - edge) && (y < Map.Height - edge);
 		}
-		[ContextMenu("Rebuild")]
 		public void Rebuild()
 		{
 			if (Mesh != null)
@@ -86,20 +85,31 @@ namespace HenrySoftware.Rage
 				Build(Map.Width, Map.Height);
 			}
 		}
+		public void Build()
+		{
+			Build(Map.Width, Map.Height);
+		}
 		public void Build(int width, int height)
+		{
+			var tileCount = width * height;
+			var emptyTiles = Enumerable.Repeat(-1, tileCount).ToList();
+			var emptyFlags = Enumerable.Repeat(TileFlags.Nothing, tileCount).ToList();
+			var count = LayerNames.Count;
+			var layers = new List<StateLayer>(count);
+			for (var i = 0; i < count; i++)
+				layers.Add(new StateLayer() { Tiles = new List<int>(emptyTiles), Flags = new List<TileFlags>(emptyFlags) });
+			var map = new StateMap() {Width = width, Height = height, Layers = layers};
+			Build(map);
+		}
+		public void Build(StateMap map)
 		{
 			DestroyChildren();
 			_layers.Clear();
 			_uv.Clear();
-			var count = LayerNames.Count;
-			Map = new StateMap() {Width = width, Height = height, Layers = new List<StateLayer>(count)};
+			Map = map;
 			Mesh = BuildMesh();
-			var tileCount = Map.Width * Map.Height;
-			var emptyTiles = Enumerable.Repeat(-1, tileCount).ToList();
-			var emptyFlags = Enumerable.Repeat(TileFlags.Nothing, tileCount).ToList();
-			for (var i = 0; i < count; i++)
+			for (var i = 0; i < LayerNames.Count; i++)
 			{
-				Map.Layers.Add(new StateLayer() { Tiles = new List<int>(emptyTiles), Flags = new List<TileFlags>(emptyFlags) });
 				var go = new GameObject() { name = LayerNames[i] };
 				go.transform.localPosition = new Vector3(0f, 0f, -LayerOffset * i);
 				go.transform.SetParent(_t, false);
@@ -263,16 +273,12 @@ namespace HenrySoftware.Rage
 				tp = new Vector2(tp.x * ppu, tp.y * ppu);
 				tp.y = height - tp.y - ppu;
 				var rect = new Rect(tp.x, tp.y, ppu, ppu);
-				uv[index + 0] = new Vector2(rect.xMin / width, rect.yMin / height);
-				uv[index + 1] = new Vector2(rect.xMax / width, rect.yMin / height);
-				uv[index + 2] = new Vector2(rect.xMin / width, rect.yMax / height);
-				uv[index + 3] = new Vector2(rect.xMax / width, rect.yMax / height);
+				var temp0 = uv[index + 0] = new Vector2(rect.xMin / width, rect.yMin / height);
+				var temp1 = uv[index + 1] = new Vector2(rect.xMax / width, rect.yMin / height);
+				var temp2 = uv[index + 2] = new Vector2(rect.xMin / width, rect.yMax / height);
+				var temp3 = uv[index + 3] = new Vector2(rect.xMax / width, rect.yMax / height);
 				if ((flags & TileFlags.Rot90) == TileFlags.Rot90)
 				{
-					var temp0 = uv[index + 0];
-					var temp1 = uv[index + 1];
-					var temp2 = uv[index + 2];
-					var temp3 = uv[index + 3];
 					uv[index + 0] = temp2;
 					uv[index + 1] = temp0;
 					uv[index + 2] = temp3;
@@ -280,10 +286,6 @@ namespace HenrySoftware.Rage
 				}
 				if ((flags & TileFlags.FlipX) == TileFlags.FlipX)
 				{
-					var temp0 = uv[index + 0];
-					var temp1 = uv[index + 1];
-					var temp2 = uv[index + 2];
-					var temp3 = uv[index + 3];
 					uv[index + 0] = temp1;
 					uv[index + 1] = temp0;
 					uv[index + 2] = temp3;
@@ -291,10 +293,6 @@ namespace HenrySoftware.Rage
 				}
 				if ((flags & TileFlags.FlipY) == TileFlags.FlipY)
 				{
-					var temp0 = uv[index + 0];
-					var temp1 = uv[index + 1];
-					var temp2 = uv[index + 2];
-					var temp3 = uv[index + 3];
 					uv[index + 0] = temp2;
 					uv[index + 1] = temp3;
 					uv[index + 2] = temp0;
@@ -329,10 +327,12 @@ namespace HenrySoftware.Rage
 		}
 		protected virtual List<Animation> GetAnimations()
 		{
-			return new List<Animation>();
+			return null;
 		}
 		void FindAnimation(int layer, int index, int tile)
 		{
+			if (_animations == null)
+				return;
 			IEnumerator current;
 			if (_runningAnimations.TryGetValue(index, out current))
 			{

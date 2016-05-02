@@ -26,6 +26,8 @@ namespace HenrySoftware.Rage
 			var element = target as TileMap;
 			DrawDefaultInspector();
 			if (GUILayout.Button("Build"))
+				element.Build();
+			if (GUILayout.Button("Rebuild"))
 				element.Rebuild();
 			if (GUILayout.Button("Save"))
 			{
@@ -39,7 +41,7 @@ namespace HenrySoftware.Rage
 				if (!string.IsNullOrEmpty(path))
 				{
 					element.Map = JsonUtility.FromJson<StateMap>(File.ReadAllText(path));
-					element.Build(element.Map.Width, element.Map.Height);
+					element.Build(element.Map);
 					element.Load();
 				}
 			}
