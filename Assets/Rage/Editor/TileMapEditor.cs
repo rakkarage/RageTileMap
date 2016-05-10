@@ -1,10 +1,19 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
+using System.Xml;
 using UnityEditor;
 using UnityEngine;
 namespace HenrySoftware.Rage
 {
+	public static partial class StringExtensions
+	{
+		public static string RemoveWhitespace(this string input)
+		{
+			return new string(input.Where(c => !Char.IsWhiteSpace(c)).ToArray());
+		}
+	}
 	[CustomEditor(typeof(TileMap), true)]
 	public class TileMapEditor : Editor
 	{
@@ -42,6 +51,36 @@ namespace HenrySoftware.Rage
 				{
 					element.Map = JsonUtility.FromJson<StateMap>(File.ReadAllText(path));
 					element.Build(element.Map);
+					element.Load();
+				}
+			}
+			if (GUILayout.Button("Import Tiled TMX CSV"))
+			{
+				var path = EditorUtility.OpenFilePanel("Load map...", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "tmx");
+				if (!string.IsNullOrEmpty(path))
+				{
+					XmlDocument xml = new XmlDocument();
+					xml.LoadXml(File.ReadAllText(path));
+					var map = xml.GetElementsByTagName("map")[0];
+					element.Map.Width = int.Parse(map.Attributes.GetNamedItem("width").Value);
+					element.Map.Height = int.Parse(map.Attributes.GetNamedItem("height").Value);
+					element.Build();
+					var firstgid = 0;
+					foreach (XmlNode child in map.ChildNodes)
+					{
+						if (child.Name == "tileset")
+							firstgid = int.Parse(child.Attributes.GetNamedItem("firstgid").Value);
+						else if (child.Name == "layer")
+						{
+							var name = child.Attributes.GetNamedItem("name").Value;
+							if (!element.LayerNames.Contains(name))
+								element.LayerNames.Add(name);
+							var index = element.LayerNames.IndexOf(name);
+							var csv = child.FirstChild.FirstChild.Value.RemoveWhitespace();
+							var list = csv.Split(',').ToList().ConvertAll(s => int.Parse(s) - firstgid);
+							element.Map.Layers[index].Tiles = list;
+						}
+					}
 					element.Load();
 				}
 			}
