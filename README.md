@@ -14,6 +14,7 @@ Features:
 - Flip and rotate tiles.
 - Animate tiles.
 - Maximum of 126x126 (15876) tiles. (Thanks Obama!?)
+- Tiled tmx csv import
 
 Graphics:
 - <https://henrysoftware.itch.io/pixel-level-free>
