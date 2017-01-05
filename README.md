@@ -16,6 +16,14 @@ Features:
 - Maximum of 126x126 (15876) tiles. (Thanks Obama!?)
 - Tiled tmx csv import
 
+New:
+
+- Mini map.
+- Path finding. (with path display in game (pooled animated prefabs) and in editor (arrow gizmos))
+- Raycast light & fog of war.
+- Pan map (with snap to screen & character) & pinch and mouse wheel zoom.
+- Oriented and stretched background.
+
 Graphics:
 - <https://henrysoftware.itch.io/pixel-level-free>
 
