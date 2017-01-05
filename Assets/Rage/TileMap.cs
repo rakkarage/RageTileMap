@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using UnityEngine;
 namespace HenrySoftware.Rage
 {
@@ -39,10 +40,10 @@ namespace HenrySoftware.Rage
 		public List<string> LayerNames;
 		public List<Material> LayerMaterials;
 		List<Animation> _animations;
-		Dictionary<int, IEnumerator> _runningAnimations = new Dictionary<int, IEnumerator>();
+		List<Dictionary<int, IEnumerator>> _runningAnimations;
 		[NonSerialized]
 		public Mesh Mesh;
-		public StateMap Map;
+		public StateMap State;
 		void Awake()
 		{
 			_t = transform;
@@ -50,12 +51,12 @@ namespace HenrySoftware.Rage
 		}
 		public int TileIndex(Vector2 p) { return TileIndex((int)p.x, (int)p.y); }
 		public int TileIndex(Vector2 p, int width) { return TileIndex((int)p.x, (int)p.y, width); }
-		public int TileIndex(int x, int y) { return TileIndex(x, y, Map.Width); }
+		public int TileIndex(int x, int y) { return TileIndex(x, y, State.Width); }
 		public int TileIndex(int x, int y, int width)
 		{
 			return y * width + x;
 		}
-		public Vector2 TilePosition(int index) { return TilePosition(index, Map.Width); }
+		public Vector2 TilePosition(int index) { return TilePosition(index, State.Width); }
 		public Vector2 TilePosition(int index, int width)
 		{
 			var y = index / width;
@@ -68,29 +69,33 @@ namespace HenrySoftware.Rage
 		public bool InsideMap(int x, int y, int edge = 0)
 		{
 			return (x >= 0 + edge) && (y >= 0 + edge) &&
-				(x < Map.Width - edge) && (y < Map.Height - edge);
+				(x < State.Width - edge) && (y < State.Height - edge);
 		}
 		public void Rebuild()
 		{
 			if (Mesh != null)
 			{
 				var oldTilesAcross = (int)Mesh.bounds.size.x;
-				var saved = JsonUtility.ToJson(Map);
+				var saved = JsonUtility.ToJson(State);
 				var savedMap = JsonUtility.FromJson<StateMap>(saved);
-				Build(Map.Width, Map.Height);
+				Build(State.Width, State.Height);
 				Apply(savedMap, oldTilesAcross);
 			}
 			else
 			{
-				Build(Map.Width, Map.Height);
+				Build(State.Width, State.Height);
 			}
 		}
 		public void Build()
 		{
-			Build(Map.Width, Map.Height);
+			Build(State.Width, State.Height);
 		}
-		public void Build(int width, int height)
+		public void Build(int width, int height, int x = 0, int y = 0)
 		{
+			if (_runningAnimations != null)
+				for (var i = 0; i < _runningAnimations.Count; i++)
+					foreach (var a in _runningAnimations[i])
+						StopCoroutine(a.Value);
 			var tileCount = width * height;
 			var emptyTiles = Enumerable.Repeat(-1, tileCount).ToList();
 			var emptyFlags = Enumerable.Repeat(TileFlags.Nothing, tileCount).ToList();
@@ -98,15 +103,19 @@ namespace HenrySoftware.Rage
 			var layers = new List<StateLayer>(count);
 			for (var i = 0; i < count; i++)
 				layers.Add(new StateLayer() { Tiles = new List<int>(emptyTiles), Flags = new List<TileFlags>(emptyFlags) });
-			var map = new StateMap() {Width = width, Height = height, Layers = layers};
+			var map = new StateMap() {Width = width, Height = height, X = x, Y = y, Layers = layers};
 			Build(map);
+			_runningAnimations = new List<Dictionary<int, IEnumerator>>();
+			for (var i = 0; i < count; i++)
+				_runningAnimations.Add(new Dictionary<int, IEnumerator>());
 		}
 		public void Build(StateMap map)
 		{
 			DestroyChildren();
 			_layers.Clear();
 			_uv.Clear();
-			Map = map;
+			State = map;
+			Manager.Instance.Character.transform.localPosition = new Vector3(State.X, State.Y, -LayerOffset * 2);
 			Mesh = BuildMesh();
 			for (var i = 0; i < LayerNames.Count; i++)
 			{
@@ -118,6 +127,7 @@ namespace HenrySoftware.Rage
 				_layers.Add(filter);
 				_uv.Add(Mesh.uv);
 				var renderer = go.AddComponent<MeshRenderer>();
+				renderer.sortingOrder = i;
 				renderer.sharedMaterial = LayerMaterials[LayerMaterials.Count > 1 ? i : 0];
 			}
 		}
@@ -130,22 +140,52 @@ namespace HenrySoftware.Rage
 				Destroy(_t.GetChild(i).gameObject);
 			}
 		}
+		public virtual void LoadXml(string text)
+		{
+			var xml = new XmlDocument();
+			xml.LoadXml(text);
+			var map = xml.GetElementsByTagName("map")[0];
+			State.Width = int.Parse(map.Attributes.GetNamedItem("width").Value);
+			State.Height = int.Parse(map.Attributes.GetNamedItem("height").Value);
+			Build();
+			var firstgid = 0;
+			foreach (XmlNode child in map.ChildNodes)
+			{
+				if (child.Name == "tileset")
+					firstgid = int.Parse(child.Attributes.GetNamedItem("firstgid").Value);
+				else if (child.Name == "layer")
+				{
+					var name = child.Attributes.GetNamedItem("name").Value;
+					if (!LayerNames.Contains(name))
+						LayerNames.Add(name);
+					var index = LayerNames.IndexOf(name);
+					var csv = child.FirstChild.FirstChild.Value.RemoveWhitespace();
+					var list = csv.Split(',').ToList().ConvertAll(s => int.Parse(s) - firstgid);
+					State.Layers[index].Tiles = list;
+				}
+			}
+			Load();
+			Manager.Instance.PathFinder.SetupMap();
+			var p = new Vector2(4, 4);
+			Manager.Instance.Character.transform.localPosition = p;
+			Manager.Instance.PathFinder.ReachableFrom(p);
+		}
 		public void Load(string json)
 		{
-			JsonUtility.FromJsonOverwrite(json, Map);
+			JsonUtility.FromJsonOverwrite(json, State);
 			Mesh = BuildMesh();
 			Load();
 		}
 		Mesh BuildMesh()
 		{
-			var quads = Map.Width * Map.Height;
+			var quads = State.Width * State.Height;
 			var vertices = new Vector3[quads * 4];
 			var triangles = new int[quads * 6];
 			var normals = new Vector3[vertices.Length];
 			var uv = new Vector2[vertices.Length];
-			for (var y = 0; y < Map.Height; y++)
+			for (var y = 0; y < State.Height; y++)
 			{
-				for (var x = 0; x < Map.Width; x++)
+				for (var x = 0; x < State.Width; x++)
 				{
 					var i = TileIndex(x, y);
 					var vi = i * 4;
@@ -179,21 +219,21 @@ namespace HenrySoftware.Rage
 		}
 		public void Load()
 		{
-			for (var layer = 0; layer < Map.Layers.Count; layer++)
-				for (var tile = 0; tile < Map.Layers[layer].Tiles.Count; tile++)
+			for (var layer = 0; layer < State.Layers.Count; layer++)
+				for (var tile = 0; tile < State.Layers[layer].Tiles.Count; tile++)
 					SetTile(layer, tile, GetTile(layer, tile), GetTileFlags(layer, tile), false);
 			Commit();
 		}
 		public void Clear()
 		{
-			for (var layer = 0; layer < Map.Layers.Count; layer++)
-				for (var tile = 0; tile < Map.Layers[layer].Tiles.Count; tile++)
+			for (var layer = 0; layer < State.Layers.Count; layer++)
+				for (var tile = 0; tile < State.Layers[layer].Tiles.Count; tile++)
 					SetTile(layer, tile, -1, TileFlags.Nothing, false);
 			Commit();
 		}
 		public void Apply(StateMap map, int oldWidth)
 		{
-			for (var layer = 0; (layer < map.Layers.Count) && (layer < Map.Layers.Count); layer++)
+			for (var layer = 0; (layer < map.Layers.Count) && (layer < State.Layers.Count); layer++)
 			{
 				for (var tile = 0; tile < map.Layers[layer].Tiles.Count; tile++)
 				{
@@ -219,7 +259,7 @@ namespace HenrySoftware.Rage
 		}
 		public int GetTile(int layer, int index)
 		{
-			return Map.Layers[layer].Tiles[index];
+			return State.Layers[layer].Tiles[index];
 		}
 		public TileFlags GetTileFlags(int layer, Vector2 p)
 		{
@@ -231,7 +271,7 @@ namespace HenrySoftware.Rage
 		}
 		public TileFlags GetTileFlags(int layer, int index)
 		{
-			return Map.Layers[layer].Flags[index];
+			return State.Layers[layer].Flags[index];
 		}
 		public void SetTileFlags(int layer, int x, int y, TileFlags flags)
 		{
@@ -251,8 +291,8 @@ namespace HenrySoftware.Rage
 		}
 		public void SetTile(int layer, int index, int tile, TileFlags flags, bool commit = true, bool find = true)
 		{
-			Map.Layers[layer].Tiles[index] = tile;
-			Map.Layers[layer].Flags[index] = flags;
+			State.Layers[layer].Tiles[index] = tile;
+			State.Layers[layer].Flags[index] = flags;
 			var uv = _uv[layer];
 			if (find)
 				FindAnimation(layer, index, tile);
@@ -334,10 +374,10 @@ namespace HenrySoftware.Rage
 			if (_animations == null)
 				return;
 			IEnumerator current;
-			if (_runningAnimations.TryGetValue(index, out current))
+			if (_runningAnimations[layer].TryGetValue(index, out current))
 			{
 				StopCoroutine(current);
-				_runningAnimations.Remove(index);
+				_runningAnimations[layer].Remove(index);
 			}
 			for (var i = 0; i < _animations.Count; i++)
 			{
@@ -345,7 +385,7 @@ namespace HenrySoftware.Rage
 				if (a.Frames[0].Contains(tile))
 				{
 					IEnumerator test = Animate(layer, index, a.Frames, a.Fps, a.Sync);
-					_runningAnimations[index] = test;
+					_runningAnimations[layer].Add(index, test);
 					StartCoroutine(test);
 				}
 			}
@@ -368,6 +408,65 @@ namespace HenrySoftware.Rage
 				frameIndex++;
 				yield return new WaitForSeconds(time);
 			}
+		}
+		public bool Blocked(Vector2 p) { return Blocked((int)p.x, (int)p.y); }
+		public bool Blocked(int x, int y) { return Blocked(TileIndex(x, y)); }
+		public virtual bool Blocked(int index)
+		{
+			return false;
+		}
+		public bool IsDoor(Vector2 p) { return IsDoor((int)p.x, (int)p.y); }
+		public bool IsDoor(int x, int y) { return IsDoor(TileIndex(x, y)); }
+		public bool IsDoor(int index)
+		{
+			return IsDoorOpen(index) || IsDoorShut(index);
+		}
+		public bool IsDoorOpen(Vector2 p) { return IsDoorOpen((int)p.x, (int)p.y); }
+		public bool IsDoorOpen(int x, int y) { return IsDoorOpen(TileIndex(x, y)); }
+		public virtual bool IsDoorOpen(int index)
+		{
+			return false;
+		}
+		public bool IsDoorShut(Vector2 p) { return IsDoorShut((int)p.x, (int)p.y); }
+		public bool IsDoorShut(int x, int y) { return IsDoorShut(TileIndex(x, y)); }
+		public virtual bool IsDoorShut(int index)
+		{
+			return false;
+		}
+		public bool IsStair(Vector2 p) { return IsStair((int)p.x, (int)p.y); }
+		public bool IsStair(int x, int y) { return IsStair(TileIndex(x, y)); }
+		public bool IsStair(int index)
+		{
+			return IsStairDown(index) || IsStairUp(index);
+		}
+		public bool IsStairDown(Vector2 p) { return IsStairDown((int)p.x, (int)p.y); }
+		public bool IsStairDown(int x, int y) { return IsStairDown(TileIndex(x, y)); }
+		public virtual bool IsStairDown(int index)
+		{
+			return false;
+		}
+		public bool IsStairUp(Vector2 p) { return IsStairUp((int)p.x, (int)p.y); }
+		public bool IsStairUp(int x, int y) { return IsStairUp(TileIndex(x, y)); }
+		public virtual bool IsStairUp(int index)
+		{
+			return false;
+		}
+		public Color GetColor(Vector2 p)
+		{
+			return GetColor((int)p.x, (int)p.y);
+		}
+		public Color GetColor(int x, int y)
+		{
+			return GetColor(TileIndex(x, y));
+		}
+		public virtual Color GetColor(int index)
+		{
+			var color = Colors.Green;
+			if (IsDoor(index))
+				color = Colors.Blue;
+			else if (IsStair(index))
+				color = Colors.Yellow;
+			return color;
 		}
 	}
 }

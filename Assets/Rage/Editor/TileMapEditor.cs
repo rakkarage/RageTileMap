@@ -1,19 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Xml;
 using UnityEditor;
 using UnityEngine;
 namespace HenrySoftware.Rage
 {
-	public static partial class StringExtensions
-	{
-		public static string RemoveWhitespace(this string input)
-		{
-			return new string(input.Where(c => !Char.IsWhiteSpace(c)).ToArray());
-		}
-	}
 	[CustomEditor(typeof(TileMap), true)]
 	public class TileMapEditor : Editor
 	{
@@ -42,15 +33,15 @@ namespace HenrySoftware.Rage
 			{
 				var path = EditorUtility.SaveFilePanel("Save map...", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), element.name, "json");
 				if (!string.IsNullOrEmpty(path))
-					File.WriteAllText(path, JsonUtility.ToJson(element.Map));
+					File.WriteAllText(path, JsonUtility.ToJson(element.State));
 			}
 			if (GUILayout.Button("Load"))
 			{
 				var path = EditorUtility.OpenFilePanel("Load map...", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "json");
 				if (!string.IsNullOrEmpty(path))
 				{
-					element.Map = JsonUtility.FromJson<StateMap>(File.ReadAllText(path));
-					element.Build(element.Map);
+					element.State = JsonUtility.FromJson<StateMap>(File.ReadAllText(path));
+					element.Build(element.State);
 					element.Load();
 				}
 			}
@@ -59,29 +50,7 @@ namespace HenrySoftware.Rage
 				var path = EditorUtility.OpenFilePanel("Load map...", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "tmx");
 				if (!string.IsNullOrEmpty(path))
 				{
-					XmlDocument xml = new XmlDocument();
-					xml.LoadXml(File.ReadAllText(path));
-					var map = xml.GetElementsByTagName("map")[0];
-					element.Map.Width = int.Parse(map.Attributes.GetNamedItem("width").Value);
-					element.Map.Height = int.Parse(map.Attributes.GetNamedItem("height").Value);
-					element.Build();
-					var firstgid = 0;
-					foreach (XmlNode child in map.ChildNodes)
-					{
-						if (child.Name == "tileset")
-							firstgid = int.Parse(child.Attributes.GetNamedItem("firstgid").Value);
-						else if (child.Name == "layer")
-						{
-							var name = child.Attributes.GetNamedItem("name").Value;
-							if (!element.LayerNames.Contains(name))
-								element.LayerNames.Add(name);
-							var index = element.LayerNames.IndexOf(name);
-							var csv = child.FirstChild.FirstChild.Value.RemoveWhitespace();
-							var list = csv.Split(',').ToList().ConvertAll(s => int.Parse(s) - firstgid);
-							element.Map.Layers[index].Tiles = list;
-						}
-					}
-					element.Load();
+					element.LoadXml(File.ReadAllText(path));
 				}
 			}
 			if (GUILayout.Button("Clear"))
@@ -227,8 +196,8 @@ namespace HenrySoftware.Rage
 			if (p != _mouse)
 			{
 				_mouse = p;
-				_tileX = Mathf.Clamp((int)Math.Round(_mouse.x, 5, MidpointRounding.ToEven), 0, element.Map.Width - 1);
-				_tileY = Mathf.Clamp((int)Math.Round(_mouse.y, 5, MidpointRounding.ToEven), 0, element.Map.Height - 1);
+				_tileX = Mathf.Clamp((int)Math.Round(_mouse.x, 5, MidpointRounding.ToEven), 0, element.State.Width - 1);
+				_tileY = Mathf.Clamp((int)Math.Round(_mouse.y, 5, MidpointRounding.ToEven), 0, element.State.Height - 1);
 				changed = true;
 			}
 			return changed;
@@ -236,14 +205,14 @@ namespace HenrySoftware.Rage
 		bool MouseOver()
 		{
 			var element = target as TileMap;
-			return (_mouse.x > 0) && (_mouse.x < element.Map.Width) &&
-				(_mouse.y > 0) && (_mouse.y < element.Map.Height);
+			return (_mouse.x > 0) && (_mouse.x < element.State.Width) &&
+				(_mouse.y > 0) && (_mouse.y < element.State.Height);
 		}
 		[DrawGizmo(GizmoType.Selected | GizmoType.Active)]
 		static void RenderMapGizmo(TileMap tileMap, GizmoType gizmoType)
 		{
 			if (!_edit || tileMap.Mesh == null ||
-				tileMap.Map == null || tileMap.Map.Layers == null || tileMap.Map.Layers.Count == 0)
+				tileMap.State == null || tileMap.State.Layers == null || tileMap.State.Layers.Count == 0)
 				return;
 			var p = tileMap.transform.localPosition;
 			var width = tileMap.Mesh.bounds.size.x;
