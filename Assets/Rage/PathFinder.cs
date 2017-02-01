@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-namespace HenrySoftware.Rage
+namespace ca.HenrySoftware.Rage
 {
 	public static partial class VectorExtensions
 	{

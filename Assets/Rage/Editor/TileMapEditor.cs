@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-namespace HenrySoftware.Rage
+namespace ca.HenrySoftware.Rage
 {
 	[CustomEditor(typeof(TileMap), true)]
 	public class TileMapEditor : Editor

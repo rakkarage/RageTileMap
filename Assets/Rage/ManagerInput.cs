@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
-namespace HenrySoftware.Rage
+namespace ca.HenrySoftware.Rage
 {
 	public class ManagerInput : Singleton<ManagerInput>,
 		IPointerClickHandler,

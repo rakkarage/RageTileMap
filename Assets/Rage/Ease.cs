@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-namespace HenrySoftware.Rage
+namespace ca.HenrySoftware.Rage
 {
 	public enum EaseType
 	{

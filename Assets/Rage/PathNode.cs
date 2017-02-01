@@ -1,5 +1,5 @@
 using System;
-namespace HenrySoftware.Rage
+namespace ca.HenrySoftware.Rage
 {
 	public class PathNode : IComparable<PathNode>
 	{

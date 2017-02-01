@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-namespace HenrySoftware.Rage
+namespace ca.HenrySoftware.Rage
 {
 	public static partial class Utility
 	{
