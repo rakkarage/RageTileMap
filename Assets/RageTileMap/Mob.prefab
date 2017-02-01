@@ -61,19 +61,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: 
   Lit: 0
-  ActionRate: 12
-  ActionPoints: 0
-  Offense: 0
-  Defense: 0
-  Health: 0
-  HealthMax: 0
-  HealthRegen: 0
-  Power: 0
-  PowerMax: 0
-  PowerRegen: 0
-  Level: 0
-  Experience: 0
-  Sleep: 0
   Target: {fileID: 0}
   LightRadius: 1
   Path: []
@@ -107,16 +94,11 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
-  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

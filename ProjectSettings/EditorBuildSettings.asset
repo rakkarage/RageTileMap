@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Intro.unity
+    path: Assets/RageTileMap/Intro.unity
   - enabled: 1
-    path: Assets/TestFree.unity
+    path: Assets/RageTileMap/TestFree.unity
