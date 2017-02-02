@@ -1,26 +1,30 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 namespace ca.HenrySoftware.Rage
 {
 	public class Pool : MonoBehaviour
 	{
-		public int Count = 10;
-		public GameObject Prefab;
-		List<GameObject> _pool;
-		const string _name = "Pool";
-		void Awake()
+		[SerializeField] private int _count = 12;
+		[SerializeField] private GameObject _prefab = null;
+		private List<GameObject> _pool;
+		private const string _name = "Pool";
+		private Transform _t;
+		private void Awake()
 		{
-			_pool = new List<GameObject>(Count);
-			for (var i = 0; i < Count; i++)
+			_t = transform;
+			_pool = new List<GameObject>(_count);
+			for (var i = 0; i < _count; i++)
 				_pool.Add(New());
 		}
-		GameObject New()
+		private GameObject New()
 		{
-			var o = Instantiate(Prefab) as GameObject;
-			o.transform.SetParent(gameObject.transform, false);
-			o.transform.localPosition = Vector3.zero;
-			o.name = _name;
-			o.SetActive(false);
+			var o = Instantiate(_prefab) as GameObject;
+			if (o != null)
+			{
+				o.transform.SetParent(_t, false);
+				o.name = _name;
+				o.SetActive(false);
+			}
 			return o;
 		}
 		public GameObject Enter()
@@ -41,11 +45,9 @@ namespace ca.HenrySoftware.Rage
 		}
 		public void Exit(GameObject o)
 		{
-			if (o != null && _pool.Contains(o))
-			{
-				o.name = _name;
-				o.SetActive(false);
-			}
+			if (o == null) return;
+			o.name = _name;
+			o.SetActive(false);
 		}
 	}
 }
