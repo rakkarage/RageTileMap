@@ -129,12 +129,6 @@ public partial class FreeTileMap : TileMap
 		ManagerInput.Instance.CenterOnCharacter();
 		Manager.Instance.PathFinder.ReachableFrom(new Vector2(x, y));
 		Dark();
-		FindTorches();
-	}
-	public override void LoadXml(string text)
-	{
-		base.LoadXml(text);
-		Dark();
 		Manager.Instance.Character.Light();
 		FindTorches();
 	}

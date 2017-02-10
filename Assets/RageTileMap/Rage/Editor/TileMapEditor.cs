@@ -25,10 +25,13 @@ namespace ca.HenrySoftware.Rage
 		{
 			var element = target as TileMap;
 			DrawDefaultInspector();
+			GUILayout.BeginHorizontal();
 			if (GUILayout.Button("Build"))
 				element.Build();
 			if (GUILayout.Button("Rebuild"))
 				element.Rebuild();
+			GUILayout.EndHorizontal();
+			GUILayout.BeginHorizontal();
 			if (GUILayout.Button("Save"))
 			{
 				var path = EditorUtility.SaveFilePanel("Save map...", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), element.name, "json");
@@ -45,6 +48,7 @@ namespace ca.HenrySoftware.Rage
 					element.Load();
 				}
 			}
+			GUILayout.EndHorizontal();
 			if (GUILayout.Button("Import Tiled TMX CSV"))
 			{
 				var path = EditorUtility.OpenFilePanel("Load map...", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "tmx");
