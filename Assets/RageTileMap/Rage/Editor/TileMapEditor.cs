@@ -215,28 +215,30 @@ namespace ca.HenrySoftware.Rage
 		[DrawGizmo(GizmoType.Selected | GizmoType.Active)]
 		static void RenderMapGizmo(TileMap tileMap, GizmoType gizmoType)
 		{
-			if (!_edit || tileMap.Mesh == null ||
-				tileMap.State == null || tileMap.State.Layers == null || tileMap.State.Layers.Count == 0)
+			if (tileMap.Mesh == null || tileMap.State == null || tileMap.State.Layers == null || tileMap.State.Layers.Count == 0)
 				return;
 			var p = tileMap.transform.localPosition;
 			var width = tileMap.Mesh.bounds.size.x;
 			var height = tileMap.Mesh.bounds.size.y;
-			Gizmos.color = Color.green;
-			for (float i = 1; i < width; i++)
+			if (_edit)
 			{
-				Gizmos.DrawLine(p + new Vector3(i, 0), p + new Vector3(i, height));
-			}
-			for (float i = 1; i < height; i++)
-			{
-				Gizmos.DrawLine(p + new Vector3(0, i), p + new Vector3(width, i));
+				Gizmos.color = Color.green;
+				for (float i = 1; i < width; i++)
+				{
+					Gizmos.DrawLine(p + new Vector3(i, 0), p + new Vector3(i, height));
+				}
+				for (float i = 1; i < height; i++)
+				{
+					Gizmos.DrawLine(p + new Vector3(0, i), p + new Vector3(width, i));
+				}
+				Gizmos.color = Color.red;
+				Gizmos.DrawWireCube(new Vector3(_tileX, _tileY, p.z) + tileMap.transform.localPosition + new Vector3(.5f, .5f), new Vector3(1.1f, 1.1f, .2f));
 			}
 			Gizmos.color = Color.blue;
 			Gizmos.DrawLine(p, p + new Vector3(width, 0));
 			Gizmos.DrawLine(p, p + new Vector3(0, height));
 			Gizmos.DrawLine(p + new Vector3(width, 0), p + new Vector3(width, height));
 			Gizmos.DrawLine(p + new Vector3(0, height), p + new Vector3(width, height));
-			Gizmos.color = Color.red;
-			Gizmos.DrawWireCube(new Vector3(_tileX, _tileY, p.z) + tileMap.transform.localPosition + new Vector3(.5f, .5f), new Vector3(1.1f, 1.1f, .2f));
 		}
 		public override bool HasPreviewGUI()
 		{

@@ -1,57 +1,31 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 namespace ca.HenrySoftware.Rage
 {
-	[Serializable]
-	public class StateGame
-	{
-		public string Name;
-		public int Depth;
-		public int Experience;
-		public int Level;
-		public bool Started;
-		public bool Dead;
-		public StateMap Map;
-	}
 	public class Manager : Singleton<Manager>
 	{
-		public StateGame State;
 		public Mob Character;
 		public List<Mob> Mobs;
 		public TileMap TileMap;
 		public Indicator Indicator;
 		public PathFinder PathFinder;
-		bool SomethingToSave()
+		private string ToJson(StateMap map)
 		{
-			return State.Started && !State.Dead;
+			return JsonUtility.ToJson(map);
 		}
-		void OnApplicationFocus(bool focus)
+		private StateMap FromJson(string map)
 		{
-			if (!focus && SomethingToSave())
-				Save();
+			return (StateMap)JsonUtility.FromJson(map, typeof(StateMap));
 		}
-		void OnApplicationPause(bool pause)
+		[ContextMenu("SaveJsonPref")]
+		public void SaveJsonPref()
 		{
-			if (pause && SomethingToSave())
-				Save();
+			Prefs.State = ToJson(TileMap.State);
 		}
-		void OnApplicationQuit()
+		[ContextMenu("LoadJsonPref")]
+		public void LoadJsonPref()
 		{
-			if (SomethingToSave())
-				Save();
-		}
-		public void Save()
-		{
-			Prefs.State = JsonUtility.ToJson(State);
-		}
-		public void Load()
-		{
-			State = (StateGame)JsonUtility.FromJson(Prefs.State, typeof(StateGame));
-		}
-		public bool SaveExistAndNotDead()
-		{
-			return !string.IsNullOrEmpty(State.Name) && !State.Dead;
+			TileMap.State = FromJson(Prefs.State);
 		}
 	}
 }

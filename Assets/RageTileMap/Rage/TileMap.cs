@@ -103,19 +103,18 @@ namespace ca.HenrySoftware.Rage
 			var layers = new List<StateLayer>(count);
 			for (var i = 0; i < count; i++)
 				layers.Add(new StateLayer() { Tiles = new List<int>(emptyTiles), Flags = new List<TileFlags>(emptyFlags) });
-			var map = new StateMap() {Width = width, Height = height, X = x, Y = y, Layers = layers};
+			var map = new StateMap() { Width = width, Height = height, X = x, Y = y, Layers = layers };
 			Build(map);
 			_runningAnimations = new List<Dictionary<int, IEnumerator>>();
 			for (var i = 0; i < count; i++)
 				_runningAnimations.Add(new Dictionary<int, IEnumerator>());
 		}
-		public void Build(StateMap map)
+		public virtual void Build(StateMap map)
 		{
 			DestroyChildren();
 			_layers.Clear();
 			_uv.Clear();
 			State = map;
-			Manager.Instance.Character.transform.localPosition = new Vector3(State.X, State.Y, -LayerOffset * 2);
 			Mesh = BuildMesh();
 			for (var i = 0; i < LayerNames.Count; i++)
 			{
@@ -145,9 +144,7 @@ namespace ca.HenrySoftware.Rage
 			var xml = new XmlDocument();
 			xml.LoadXml(text);
 			var map = xml.GetElementsByTagName("map")[0];
-			State.Width = int.Parse(map.Attributes.GetNamedItem("width").Value);
-			State.Height = int.Parse(map.Attributes.GetNamedItem("height").Value);
-			Build();
+			Build(int.Parse(map.Attributes.GetNamedItem("width").Value), int.Parse(map.Attributes.GetNamedItem("height").Value), 4, 4);
 			var firstgid = 0;
 			foreach (XmlNode child in map.ChildNodes)
 			{
@@ -165,9 +162,9 @@ namespace ca.HenrySoftware.Rage
 				}
 			}
 			Load();
-			Manager.Instance.PathFinder.SetupMap();
-			var p = new Vector2(4, 4);
+			var p = new Vector3(State.X, State.Y, -LayerOffset * 2);
 			Manager.Instance.Character.transform.localPosition = p;
+			Manager.Instance.PathFinder.SetupMap();
 			Manager.Instance.PathFinder.ReachableFrom(p);
 		}
 		public void Load(string json)

@@ -126,6 +126,7 @@ public partial class FreeTileMap : TileMap
 			Wall();
 			Other();
 		}
+		Manager.Instance.Character.transform.localPosition = new Vector3(State.X, State.Y, -LayerOffset * 2);
 		ManagerInput.Instance.CenterOnCharacter();
 		Manager.Instance.PathFinder.ReachableFrom(new Vector2(x, y));
 		Dark();
