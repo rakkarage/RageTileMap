@@ -3223,30 +3223,25 @@ public partial class TownTileMap : TileMap
 		var background = GetTile((int)Layer.Background, index);
 		return (background >= (int)Tile.Floor0) && (background <= (int)Tile.FloorRoom5);
 	}
-	public TextAsset MapToLoad;
+	public TextAsset MapJsonToLoad;
 	void Start()
 	{
-		var x = 3;
-		var y = 3;
-		if (MapToLoad != null)
+		if (MapJsonToLoad != null)
 		{
-			x = 5;
-			x = 8;
-			LoadXml(MapToLoad.text);
+			Load(MapJsonToLoad.text);
 		}
 		else
 		{
-			// todo: fix this mess
-			var c = Manager.Instance.Character.transform.localPosition;
-			Manager.Instance.Character.transform.localPosition = new Vector3(x, y, c.z);
-			var t = Manager.Instance.Indicator.transform.localPosition;
-			Manager.Instance.Indicator.transform.localPosition = new Vector3(x, y, t.z);
-			Build(7, 7, x, y);
+			Build(7, 7, 3, 3);
 			Floor();
 			Wall();
 			Other();
 		}
-		var p = new Vector2(x, y);
+		var c = Manager.Instance.Character.transform.localPosition;
+		Manager.Instance.Character.transform.localPosition = new Vector3(State.X, State.Y, c.z);
+		var t = Manager.Instance.Indicator.transform.localPosition;
+		Manager.Instance.Indicator.transform.localPosition = new Vector3(State.X, State.Y, t.z);
+		var p = new Vector2(State.X, State.Y);
 		Manager.Instance.CenterOnCharacter();
 		Manager.Instance.PathFinder.ReachableFrom(p);
 		Dark();
@@ -3322,7 +3317,7 @@ public partial class TownTileMap : TileMap
     {
         return Utility.Random.Next(TorchRadius) + 1;
     }
-    public const int LightRadius = 3;
+    public const int LightRadius = 7;
 	Tile _themeLightMin = Tile.Light0;
 	Tile _themeLightMax = Tile.Light31;
 	const int _lightExploredOffset = 7;

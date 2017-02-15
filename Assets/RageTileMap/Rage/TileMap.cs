@@ -92,25 +92,25 @@ namespace ca.HenrySoftware.Rage
 		}
 		public void Build(int width, int height, int x = 0, int y = 0)
 		{
+			var tileCount = width * height;
+			var emptyTiles = Enumerable.Repeat(-1, tileCount).ToList();
+			var emptyFlags = Enumerable.Repeat(TileFlags.Nothing, tileCount).ToList();
+			var layers = new List<StateLayer>(LayerNames.Count);
+			for (var i = 0; i < LayerNames.Count; i++)
+				layers.Add(new StateLayer() { Tiles = new List<int>(emptyTiles), Flags = new List<TileFlags>(emptyFlags) });
+			var map = new StateMap() { Width = width, Height = height, X = x, Y = y, Layers = layers };
+			Build(map);
+		}
+		public virtual void Build(StateMap map)
+		{
+			var emptyTiles = Enumerable.Repeat(TileFlags.Nothing, map.Layers[0].Tiles.Count).ToList();
+			for (var i = 0; i < map.Layers.Count; i++)
+				if (map.Layers[i].Flags.Count == 0)
+					map.Layers[i].Flags.AddRange(emptyTiles);
 			if (_runningAnimations != null)
 				for (var i = 0; i < _runningAnimations.Count; i++)
 					foreach (var a in _runningAnimations[i])
 						StopCoroutine(a.Value);
-			var tileCount = width * height;
-			var emptyTiles = Enumerable.Repeat(-1, tileCount).ToList();
-			var emptyFlags = Enumerable.Repeat(TileFlags.Nothing, tileCount).ToList();
-			var count = LayerNames.Count;
-			var layers = new List<StateLayer>(count);
-			for (var i = 0; i < count; i++)
-				layers.Add(new StateLayer() { Tiles = new List<int>(emptyTiles), Flags = new List<TileFlags>(emptyFlags) });
-			var map = new StateMap() { Width = width, Height = height, X = x, Y = y, Layers = layers };
-			Build(map);
-			_runningAnimations = new List<Dictionary<int, IEnumerator>>();
-			for (var i = 0; i < count; i++)
-				_runningAnimations.Add(new Dictionary<int, IEnumerator>());
-		}
-		public virtual void Build(StateMap map)
-		{
 			DestroyChildren();
 			_layers.Clear();
 			_uv.Clear();
@@ -129,6 +129,9 @@ namespace ca.HenrySoftware.Rage
 				renderer.sortingOrder = i;
 				renderer.sharedMaterial = LayerMaterials[LayerMaterials.Count > 1 ? i : 0];
 			}
+			_runningAnimations = new List<Dictionary<int, IEnumerator>>();
+			for (var i = 0; i < LayerNames.Count; i++)
+				_runningAnimations.Add(new Dictionary<int, IEnumerator>());
 		}
 		void DestroyChildren()
 		{
@@ -170,7 +173,7 @@ namespace ca.HenrySoftware.Rage
 		public void Load(string json)
 		{
 			JsonUtility.FromJsonOverwrite(json, State);
-			Mesh = BuildMesh();
+			Build(State);
 			Load();
 		}
 		Mesh BuildMesh()

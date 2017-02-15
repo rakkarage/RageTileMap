@@ -46,10 +46,6 @@ namespace ca.HenrySoftware.Rage
 				{
 					element.State = JsonUtility.FromJson<StateMap>(File.ReadAllText(path));
 					element.Build(element.State);
-					var emptyTiles = Enumerable.Repeat(TileFlags.Nothing, element.State.Layers[0].Tiles.Count).ToList();
-					for (var i = 0; i < element.State.Layers.Count; i++)
-						if (element.State.Layers[i].Flags.Count == 0)
-							element.State.Layers[i].Flags.AddRange(emptyTiles);
 					element.Load();
 				}
 			}

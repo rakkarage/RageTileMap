@@ -112,26 +112,27 @@ public partial class FreeTileMap : TileMap
 		var background = GetTile((int)Layer.Background, index);
 		return (background >= (int)Tile.Floor0) && (background <= (int)Tile.FloorRoom5);
 	}
-	public TextAsset MapToLoad;
+	public TextAsset MapTmxToLoad;
 	void Start()
 	{
-		var x = 3;
-		var y = 3;
-		if (MapToLoad != null)
+		if (MapTmxToLoad != null)
 		{
-			LoadXml(MapToLoad.text);
+			LoadXml(MapTmxToLoad.text);
 		}
 		else
 		{
-			Build(7, 7, x, y);
+			Build(7, 7, 3, 3);
 			Floor();
 			Wall();
 			Other();
 		}
-		var p = new Vector3(State.X, State.Y, -LayerOffset * 2);
-		Manager.Instance.Character.transform.localPosition = p;
+		var c = Manager.Instance.Character.transform.localPosition;
+		Manager.Instance.Character.transform.localPosition = new Vector3(State.X, State.Y, c.z);
+		var t = Manager.Instance.Indicator.transform.localPosition;
+		Manager.Instance.Indicator.transform.localPosition = new Vector3(State.X, State.Y, t.z);
+		var p = new Vector2(State.X, State.Y);
 		Manager.Instance.CenterOnCharacter();
-		Manager.Instance.PathFinder.ReachableFrom(new Vector2(x, y));
+		Manager.Instance.PathFinder.ReachableFrom(p);
 		Dark();
 		Light(p);
 		FindTorches();
