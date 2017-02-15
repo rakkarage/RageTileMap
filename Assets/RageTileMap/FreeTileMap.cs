@@ -6,8 +6,8 @@ public partial class FreeTileMap : TileMap
 {
 	public enum Layer
 	{
-		Background,
-		Foreground,
+		Back,
+		Fore,
 		Light
 	}
 	private const int TilesAcross = 32;
@@ -64,12 +64,12 @@ public partial class FreeTileMap : TileMap
 	}
 	public override bool IsDoorOpen(int index)
 	{
-		var foreground = GetTile((int)Layer.Foreground, index);
+		var foreground = GetTile((int)Layer.Fore, index);
 		return foreground == (int)Tile.DoorOpen;
 	}
 	public override bool IsDoorShut(int index)
 	{
-		var foreground = GetTile((int)Layer.Foreground, index);
+		var foreground = GetTile((int)Layer.Fore, index);
 		return foreground == (int)Tile.DoorShut;
 	}
 	public override void ToggleDoor(Vector2 p)
@@ -78,38 +78,38 @@ public partial class FreeTileMap : TileMap
 		if (IsDoor(index))
 		{
 			var shut = IsDoorShut(index);
-			SetTile((int)Layer.Foreground, index, shut ? (int)Tile.DoorOpen : (int)Tile.DoorShut);
+			SetTile((int)Layer.Fore, index, shut ? (int)Tile.DoorOpen : (int)Tile.DoorShut);
 		}
 	}
 	public override bool IsStairDown(int index)
 	{
-		var foreground = GetTile((int)Layer.Foreground, index);
+		var foreground = GetTile((int)Layer.Fore, index);
 		return foreground == (int)Tile.StairsDown;
 	}
 	public override bool IsStairUp(int index)
 	{
-		var foreground = GetTile((int)Layer.Foreground, index);
+		var foreground = GetTile((int)Layer.Fore, index);
 		return foreground == (int)Tile.StairsUp;
 	}
 	public bool IsTorch(Vector2 p) { return IsTorch((int)p.x, (int)p.y); }
 	public bool IsTorch(int x, int y) { return IsTorch(TileIndex(x, y)); }
 	public bool IsTorch(int index)
 	{
-		var foreground = GetTile((int)Layer.Foreground, index);
+		var foreground = GetTile((int)Layer.Fore, index);
 		return (foreground >= (int)Tile.WallTorch0) && (foreground <= (int)Tile.WallTorch3);
 	}
 	public bool IsWall(Vector2 p) { return IsWall((int)p.x, (int)p.y); }
 	public bool IsWall(int x, int y) { return IsWall(TileIndex(x, y)); }
 	public bool IsWall(int index)
 	{
-		var foreground = GetTile((int)Layer.Foreground, index);
+		var foreground = GetTile((int)Layer.Fore, index);
 		return (foreground >= (int)Tile.WallTorch0) && (foreground <= (int)Tile.Wall7);
 	}
 	public bool IsFloor(Vector2 p) { return IsFloor((int)p.x, (int)p.y); }
 	public bool IsFloor(int x, int y) { return IsFloor(TileIndex(x, y)); }
 	public bool IsFloor(int index)
 	{
-		var background = GetTile((int)Layer.Background, index);
+		var background = GetTile((int)Layer.Back, index);
 		return (background >= (int)Tile.Floor0) && (background <= (int)Tile.FloorRoom5);
 	}
 	public TextAsset MapTmxToLoad;

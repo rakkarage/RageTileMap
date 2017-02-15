@@ -6,9 +6,9 @@ public partial class TownTileMap : TileMap
 {
 	public enum Layer
 	{
-		Background,
+		Back,
 		Blood,
-		Foreground,
+		Fore,
 		Flower,
 		SplitBackground,
 		SplitBackgroundWater,
@@ -3175,12 +3175,12 @@ public partial class TownTileMap : TileMap
 	}
 	public override bool IsDoorOpen(int index)
 	{
-		var foreground = GetTile((int)Layer.Foreground, index);
+		var foreground = GetTile((int)Layer.Fore, index);
 		return foreground == (int)Tile.DoorOpen;
 	}
 	public override bool IsDoorShut(int index)
 	{
-		var foreground = GetTile((int)Layer.Foreground, index);
+		var foreground = GetTile((int)Layer.Fore, index);
 		return foreground == (int)Tile.DoorShut;
 	}
 	public override void ToggleDoor(Vector2 p)
@@ -3189,38 +3189,38 @@ public partial class TownTileMap : TileMap
 		if (IsDoor(index))
 		{
 			var shut = IsDoorShut(index);
-			SetTile((int)Layer.Foreground, index, shut ? (int)Tile.DoorOpen : (int)Tile.DoorShut);
+			SetTile((int)Layer.Fore, index, shut ? (int)Tile.DoorOpen : (int)Tile.DoorShut);
 		}
 	}
 	public override bool IsStairDown(int index)
 	{
-		var foreground = GetTile((int)Layer.Foreground, index);
+		var foreground = GetTile((int)Layer.Fore, index);
 		return foreground == (int)Tile.StairsDown;
 	}
 	public override bool IsStairUp(int index)
 	{
-		var foreground = GetTile((int)Layer.Foreground, index);
+		var foreground = GetTile((int)Layer.Fore, index);
 		return foreground == (int)Tile.StairsUp;
 	}
 	public bool IsTorch(Vector2 p) { return IsTorch((int)p.x, (int)p.y); }
 	public bool IsTorch(int x, int y) { return IsTorch(TileIndex(x, y)); }
 	public bool IsTorch(int index)
 	{
-		var foreground = GetTile((int)Layer.Foreground, index);
+		var foreground = GetTile((int)Layer.Fore, index);
 		return (foreground >= (int)Tile.WallTorch0) && (foreground <= (int)Tile.WallTorch3);
 	}
 	public bool IsWall(Vector2 p) { return IsWall((int)p.x, (int)p.y); }
 	public bool IsWall(int x, int y) { return IsWall(TileIndex(x, y)); }
 	public bool IsWall(int index)
 	{
-		var foreground = GetTile((int)Layer.Foreground, index);
+		var foreground = GetTile((int)Layer.Fore, index);
 		return (foreground >= (int)Tile.WallTorch0) && (foreground <= (int)Tile.Wall7);
 	}
 	public bool IsFloor(Vector2 p) { return IsFloor((int)p.x, (int)p.y); }
 	public bool IsFloor(int x, int y) { return IsFloor(TileIndex(x, y)); }
 	public bool IsFloor(int index)
 	{
-		var background = GetTile((int)Layer.Background, index);
+		var background = GetTile((int)Layer.Back, index);
 		return (background >= (int)Tile.Floor0) && (background <= (int)Tile.FloorRoom5);
 	}
 	public TextAsset MapJsonToLoad;
@@ -3229,6 +3229,7 @@ public partial class TownTileMap : TileMap
 		if (MapJsonToLoad != null)
 		{
 			Load(MapJsonToLoad.text);
+			DrawEdge();
 		}
 		else
 		{
@@ -3260,14 +3261,14 @@ public partial class TownTileMap : TileMap
 	{
 		for (var y = 0; y < State.Height; y++)
 			for (var x = 0; x < State.Width; x++)
-				SetTile((int)Layer.Background, x, y, (int)Tile.Floor0 + Utility.Random.Next(6));
+				SetTile((int)Layer.Back, x, y, (int)Tile.Floor0 + Utility.Random.Next(6));
 	}
 	void Wall()
 	{
 		for (var y = 0; y < State.Height; y++)
 			for (var x = 0; x < State.Width; x++)
 				if (x == 0 || x == State.Width - 1 || y == 0 || y == State.Height - 1)
-					SetTile((int)Layer.Foreground, x, y, RandomWall());
+					SetTile((int)Layer.Fore, x, y, RandomWall());
 	}
 	int RandomWall(bool plain = false)
 	{
@@ -3300,17 +3301,17 @@ public partial class TownTileMap : TileMap
 	}
 	void Other()
 	{
-		SetTile((int)Layer.Foreground, 2, 5, (int)Tile.BannerA0);
-		SetTile((int)Layer.Foreground, 3, 5, (int)Tile.Bed);
-		SetTile((int)Layer.Foreground, 4, 5, (int)Tile.BannerB0);
-		SetTile((int)Layer.Foreground, 2, 4, (int)Tile.Table);
-		SetTile((int)Layer.Foreground, 3, 4, (int)Tile.Rug2);
-		SetTile((int)Layer.Foreground, 4, 4, (int)Tile.Chair0);
-		SetTile((int)Layer.Foreground, 1, 2, (int)Tile.DoorShut);
+		SetTile((int)Layer.Fore, 2, 5, (int)Tile.BannerA0);
+		SetTile((int)Layer.Fore, 3, 5, (int)Tile.Bed);
+		SetTile((int)Layer.Fore, 4, 5, (int)Tile.BannerB0);
+		SetTile((int)Layer.Fore, 2, 4, (int)Tile.Table);
+		SetTile((int)Layer.Fore, 3, 4, (int)Tile.Rug2);
+		SetTile((int)Layer.Fore, 4, 4, (int)Tile.Chair0);
+		SetTile((int)Layer.Fore, 1, 2, (int)Tile.DoorShut);
 		var maxX = State.Width - 2;
 		for (var i = 2; i <= maxX; i++)
-			SetTile((int)Layer.Foreground, i, 2, RandomWall());
-		SetTile((int)Layer.Foreground, maxX, 1, (int)Tile.StairsDown);
+			SetTile((int)Layer.Fore, i, 2, RandomWall());
+		SetTile((int)Layer.Fore, maxX, 1, (int)Tile.StairsDown);
 	}
     const int TorchRadius = 5;
     int RandomTorchRadius()
@@ -3534,6 +3535,117 @@ public partial class TownTileMap : TileMap
 				}
 				else if (IsLight(index))
 					EmitLightFrom(p, RandomTorchRadius());
+			}
+		}
+	}
+	static Tile RandomEdge()
+	{
+		return Tile.Edge0 + Utility.Random.Next(28);
+	}
+	static Tile RandomEdgeInside()
+	{
+		Tile edge;
+		var random = (float)Utility.Random.NextDouble();
+		if (random < .333f)
+		{
+			edge = Tile.InsideEdge0;
+		}
+		else if (random < .777f)
+		{
+			edge = Tile.InsideEdge1 + Utility.Random.Next(7);
+		}
+		else
+		{
+			edge = Tile.InsideEdge8 + Utility.Random.Next(28);
+		}
+		return edge;
+	}
+	static Tile RandomEdgeInsideCorner()
+	{
+		return Tile.InsideEdgeCorner0 + Utility.Random.Next(22);
+	}
+	void DrawEdge()
+	{
+		for (var y = 0; y < State.Height; y++)
+		{
+			for (var x = 0; x < State.Width; x++)
+			{
+				if ((x == 0) || (x == State.Width - 1) || (y == 0) || (y == State.Height - 1))
+				{
+					if (x == 0 && y == 0) // sw
+					{
+						SetTile((int)Layer.Back, x, y, (int)Tile.EdgeSW);
+					}
+					else if (x == 0 && y == State.Height - 1) // nw
+					{
+						SetTile((int)Layer.Back, x, y, (int)Tile.EdgeNW);
+					}
+					else if (x == State.Width - 1 && y == 0) // se
+					{
+						SetTile((int)Layer.Back, x, y, (int)Tile.EdgeSE);
+					}
+					else if (x == State.Width - 1 && y == State.Height - 1) // ne
+					{
+						SetTile((int)Layer.Back, x, y, (int)Tile.EdgeNE);
+					}
+					else
+					{
+						SetTile((int)Layer.Back, x, y, (int)RandomEdge(), RandomFlipX());
+					}
+					if ((x == 0) && (y >= 1) && (y <= State.Height - 2)) // w
+					{
+						SetTileFlags((int)Layer.Back, x, y, RandomFlipX() | TileFlags.Rot90);
+					}
+					else if ((x == State.Width - 1) && (y >= 1) && (y <= State.Height - 2)) // e
+					{
+						SetTileFlags((int)Layer.Back, x, y, TileFlags.FlipX | RandomFlipY() | TileFlags.Rot90);
+					}
+					else if ((y == 0) && (x >= 1) && (x <= State.Width - 2)) // s
+					{
+						SetTileFlags((int)Layer.Back, x, y, RandomFlipX() | TileFlags.FlipY);
+					}
+				}
+				else
+				{
+					if ((x == 1) || (x == State.Width - 2) || (y == 1) || (y == State.Height - 2))
+					{
+						if (x == 1 && y == 1) // sw
+						{
+							SetTile((int)Layer.Edge, x, y, (int)RandomEdgeInsideCorner(), TileFlags.FlipY);
+						}
+						else if (x == 1 && y == State.Height - 2) // nw
+						{
+							SetTile((int)Layer.Edge, x, y, (int)RandomEdgeInsideCorner());
+						}
+						else if (x == State.Width - 2 && y == 1) // se
+						{
+							SetTile((int)Layer.Edge, x, y, (int)RandomEdgeInsideCorner(), TileFlags.FlipX | TileFlags.FlipY);
+						}
+						else if (x == State.Width - 2 && y == State.Height - 2) // ne
+						{
+							SetTile((int)Layer.Edge, x, y, (int)RandomEdgeInsideCorner(), TileFlags.FlipX | TileFlags.FlipY | TileFlags.Rot90);
+						}
+						else
+						{
+							if ((x == 1) && (y >= 2) && (y <= State.Height - 3)) // w
+							{
+								SetTile((int)Layer.Edge, x, y, (int)RandomEdgeInside(), RandomFlipY() | TileFlags.Rot90);
+							}
+							else if ((x == State.Width - 2) && (y >= 2) && (y <= State.Height - 3)) // e
+							{
+								SetTile((int)Layer.Edge, x, y, (int)RandomEdgeInside(), TileFlags.FlipX | RandomFlipY() | TileFlags.Rot90);
+							}
+							else if ((y == 1) && (x >= 2) && (x <= State.Width - 3)) // s
+							{
+								SetTile((int)Layer.Edge, x, y, (int)RandomEdgeInside(), RandomFlipX() | TileFlags.FlipY);
+							}
+							else
+							{
+								SetTile((int)Layer.Edge, x, y, (int)RandomEdgeInside(), RandomFlipX());
+							}
+						}
+					}
+				}
 			}
 		}
 	}

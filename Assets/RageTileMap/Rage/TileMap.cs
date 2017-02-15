@@ -11,9 +11,9 @@ namespace ca.HenrySoftware.Rage
 	public enum TileFlags
 	{
 		Nothing = 0,
-		FlipX = (1 << 1),
-		FlipY = (1 << 2),
-		Rot90 = (1 << 3),
+		FlipX = (1 << 0),
+		FlipY = (1 << 1),
+		Rot90 = (1 << 2),
 	}
 	[Serializable]
 	public class StateLayer
@@ -48,6 +48,18 @@ namespace ca.HenrySoftware.Rage
 		{
 			_t = transform;
 			_animations = GetAnimations();
+		}
+		public TileFlags RandomFlipX()
+		{
+			return Utility.Random.NextBool() ? TileFlags.FlipX : TileFlags.Nothing;
+		}
+		public TileFlags RandomFlipY()
+		{
+			return Utility.Random.NextBool() ? TileFlags.FlipY : TileFlags.Nothing;
+		}
+		public TileFlags RandomRot90()
+		{
+			return Utility.Random.NextBool() ? TileFlags.Rot90 : TileFlags.Nothing;
 		}
 		public int TileIndex(Vector2 p) { return TileIndex((int)p.x, (int)p.y); }
 		public int TileIndex(Vector2 p, int width) { return TileIndex((int)p.x, (int)p.y, width); }
