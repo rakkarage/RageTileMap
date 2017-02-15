@@ -50,11 +50,13 @@ public partial class FreeTileMap : TileMap
 	};
 	protected override List<Animation> GetAnimations()
 	{
-		var animations = new List<Animation>();
-		animations.Add(new Animation() { Frames = new int[][] { _torch }, Fps = _torchSpeed });
-		animations.Add(new Animation() { Frames = _bannerA, Fps = _bannerSpeed });
-		animations.Add(new Animation() { Frames = _bannerB, Fps = _bannerSpeed });
-		return animations;
+	    var animations = new List<Animation>
+	    {
+	        new Animation() {Frames = new int[][] {_torch}, Fps = _torchSpeed},
+	        new Animation() {Frames = _bannerA, Fps = _bannerSpeed},
+	        new Animation() {Frames = _bannerB, Fps = _bannerSpeed}
+	    };
+	    return animations;
 	}
 	public override bool Blocked(int index)
 	{
@@ -70,7 +72,7 @@ public partial class FreeTileMap : TileMap
 		var foreground = GetTile((int)Layer.Foreground, index);
 		return foreground == (int)Tile.DoorShut;
 	}
-	public void ToggleDoor(Vector2 p)
+	public override void ToggleDoor(Vector2 p)
 	{
 		var index = TileIndex(p);
 		if (IsDoor(index))
@@ -126,11 +128,12 @@ public partial class FreeTileMap : TileMap
 			Wall();
 			Other();
 		}
-		Manager.Instance.Character.transform.localPosition = new Vector3(State.X, State.Y, -LayerOffset * 2);
-		ManagerInput.Instance.CenterOnCharacter();
+		var p = new Vector3(State.X, State.Y, -LayerOffset * 2);
+		Manager.Instance.Character.transform.localPosition = p;
+		Manager.Instance.CenterOnCharacter();
 		Manager.Instance.PathFinder.ReachableFrom(new Vector2(x, y));
 		Dark();
-		Manager.Instance.Character.Light();
+		Light(p);
 		FindTorches();
 	}
 	public void FindTorches()
@@ -197,6 +200,12 @@ public partial class FreeTileMap : TileMap
 			SetTile(1, i, 2, RandomWall());
 		SetTile(1, maxX, 1, (int)Tile.StairsDown);
 	}
+    const int TorchRadius = 5;
+    int RandomTorchRadius()
+    {
+        return Utility.Random.Next(TorchRadius) + 1;
+    }
+    public const int LightRadius = 3;
 	Tile _themeLightMin = Tile.Light0;
 	Tile _themeLightMax = Tile.Light31;
 	const int _lightExploredOffset = 7;
@@ -342,7 +351,7 @@ public partial class FreeTileMap : TileMap
 		}
 		SetLight(x, y, _themeLightMax, true);
 	}
-	public void Light(Vector2 p, int radius)
+	public void Light(Vector2 p, int radius = LightRadius)
 	{
 		Darken();
 		EmitLightFrom(p, radius);
@@ -416,9 +425,34 @@ public partial class FreeTileMap : TileMap
 			}
 		}
 	}
-	const int _torchRadius = 5;
-	int RandomTorchRadius()
+	const float _bright = 1f;
+	const float _dim = .5f;
+	const float _unlit = .333f;
+	public override Color GetMapColor(int x, int y, bool screen = false)
 	{
-		return Utility.Random.Next(_torchRadius) + 1;
+		var index = TileIndex(x, y);
+		var lit = IsLight(index);
+		var explored = IsExplored(index);
+		var wall = IsWall(index);
+		var stairs = IsStair(index);
+		var door = IsDoor(index);
+		var floor = IsFloor(index);
+		var color = screen ? Color.magenta.SetAlpha(.5f) : Color.clear;
+		if (explored || lit)
+		{
+			if (stairs)
+				color = Colors.YellowLight.SetAlpha(_bright);
+			else if (door)
+				color = Colors.BlueLight.SetAlpha(_bright);
+			else if (wall && !screen)
+				color = Colors.GreyDark.SetAlpha(_dim);
+			else if (floor && !screen)
+				color = Colors.Grey.SetAlpha(lit ? _dim : _unlit);
+		}
+		return color;
+	}
+	public override void Turn()
+	{
+		Light(Manager.Instance.Character.transform.localPosition);
 	}
 }

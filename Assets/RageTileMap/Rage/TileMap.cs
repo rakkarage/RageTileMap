@@ -430,6 +430,9 @@ namespace ca.HenrySoftware.Rage
 		{
 			return false;
 		}
+		public virtual void ToggleDoor(Vector2 p)
+		{
+		}
 		public bool IsStair(Vector2 p) { return IsStair((int)p.x, (int)p.y); }
 		public bool IsStair(int x, int y) { return IsStair(TileIndex(x, y)); }
 		public bool IsStair(int index)
@@ -448,16 +451,24 @@ namespace ca.HenrySoftware.Rage
 		{
 			return false;
 		}
+		public virtual void Turn()
+		{
+		}
+		public Color GetMapColor(Vector2 p)
+		{
+			return GetMapColor((int)p.x, (int)p.y);
+		}
+		public virtual Color GetMapColor(int x, int y, bool screen = false)
+		{
+			return Color.red;
+		}
 		public Color GetColor(Vector2 p)
 		{
 			return GetColor((int)p.x, (int)p.y);
 		}
-		public Color GetColor(int x, int y)
+		public virtual Color GetColor(int x, int y, bool screen = false)
 		{
-			return GetColor(TileIndex(x, y));
-		}
-		public virtual Color GetColor(int index)
-		{
+			var index = TileIndex(x, y);
 			var color = Colors.Green;
 			if (IsDoor(index))
 				color = Colors.Blue;

@@ -9,7 +9,6 @@ namespace ca.HenrySoftware.Rage
 		public string Name;
 		public bool Lit;
 		public Mob Target;
-		public int LightRadius = 1;
 		public List<Vector2> Path;
 		Animator _animator;
 		public Animator Animator { get { return _animator; } }
@@ -71,7 +70,7 @@ namespace ca.HenrySoftware.Rage
 				else
 				{
 					if (Path.Count > 1)
-						ManagerInput.Instance.ResetTurn();
+						Manager.Instance.ResetTurn();
 					else
 						ResetPath();
 				}
@@ -89,7 +88,7 @@ namespace ca.HenrySoftware.Rage
 		}
 		void ToggleDoor(Vector2 p, bool recalculate = true)
 		{
-			((FreeTileMap)Manager.Instance.TileMap).ToggleDoor(p);
+			Manager.Instance.TileMap.ToggleDoor(p);
 			if (recalculate)
 				Manager.Instance.PathFinder.ReachableFrom();
 		}
@@ -179,10 +178,6 @@ namespace ca.HenrySoftware.Rage
 			}
 			if (((newX != oldX) || (newY != oldY)) && Manager.Instance.TileMap.InsideMap(newX, newY))
 				_t.localPosition = new Vector3(newX, newY, _t.localPosition.z);
-		}
-		public void Light()
-		{
-			((FreeTileMap)Manager.Instance.TileMap).Light(_t.localPosition, LightRadius);
 		}
 	}
 }

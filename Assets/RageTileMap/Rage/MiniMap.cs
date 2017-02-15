@@ -11,9 +11,6 @@ namespace ca.HenrySoftware.Rage
 		const int _layer = 11;
 		bool _shown = false;
 		const int _max = 32;
-		const float _bright = 1f;
-		const float _dim = .5f;
-		const float _unlit = .333f;
 		const float _time = Constants.TimeTween;
 		void Awake()
 		{
@@ -88,7 +85,7 @@ namespace ca.HenrySoftware.Rage
 				if (offsetY < 0) offsetY = 0;
 				if (offsetY > oHeight - height) offsetY = oHeight - height;
 			}
-			var bounds = ManagerInput.Instance.GameCamera.OrthographicBounds();
+			var bounds = Manager.Instance.GameCamera.OrthographicBounds();
 			var minX = Mathf.RoundToInt(bounds.min.x);
 			var maxX = Mathf.RoundToInt(bounds.max.x);
 			var minY = Mathf.RoundToInt(bounds.min.y);
@@ -111,38 +108,14 @@ namespace ca.HenrySoftware.Rage
 							((actualY >= minY) && (actualY <= maxY)) &&
 							((actualX == minX) || (actualX == maxX))
 						);
-					var color = character ? Colors.GreenLight.SetAlpha(_bright) :
-						GetMapColor(actualX, actualY, screen);
+					var color = character ? Colors.GreenLight :
+						tileMap.GetMapColor(actualX, actualY, screen);
 					texture.SetPixel(x, y, color);
 				}
 			}
 			texture.filterMode = FilterMode.Point;
 			texture.Apply();
 			return texture;
-		}
-		Color GetMapColor(int x, int y, bool screen)
-		{
-			var tileMap = Manager.Instance.TileMap as FreeTileMap;
-			var index = tileMap.TileIndex(x, y);
-			var lit = tileMap.IsLight(index);
-			var explored = tileMap.IsExplored(index);
-			var wall = tileMap.IsWall(index);
-			var stairs = tileMap.IsStair(index);
-			var door = tileMap.IsDoor(index);
-			var floor = tileMap.IsFloor(index);
-			var color = screen ? Color.magenta.SetAlpha(.5f) : Color.clear;
-			if (explored || lit)
-			{
-				if (stairs)
-					color = Colors.YellowLight.SetAlpha(_bright);
-				else if (door)
-					color = Colors.BlueLight.SetAlpha(_bright);
-				else if (wall && !screen)
-					color = Colors.GreyDark.SetAlpha(_dim);
-				else if (floor && !screen)
-					color = Colors.Grey.SetAlpha(lit ? _dim : _unlit);
-			}
-			return color;
 		}
 	}
 }

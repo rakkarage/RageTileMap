@@ -48,13 +48,8 @@ namespace ca.HenrySoftware.Rage
 					element.Build(element.State);
 					var emptyTiles = Enumerable.Repeat(TileFlags.Nothing, element.State.Layers[0].Tiles.Count).ToList();
 					for (var i = 0; i < element.State.Layers.Count; i++)
-					{
 						if (element.State.Layers[i].Flags.Count == 0)
-						{
-							Debug.Log("LayerFLags" + i + ": Empty!");
-							element.State.Layers[i].Flags = new List<TileFlags>(emptyTiles);
-						}
-					}
+							element.State.Layers[i].Flags.AddRange(emptyTiles);
 					element.Load();
 				}
 			}

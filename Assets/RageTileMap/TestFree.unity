@@ -531,7 +531,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1312892410}
-  - component: {fileID: 1312892411}
   m_Layer: 0
   m_Name: Root
   m_TagString: Untagged
@@ -555,35 +554,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1312892411
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1312892409}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d6badd597ae74f48ad0ca6405f71a2f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  State:
-    Name: 
-    Depth: 0
-    Experience: 0
-    Level: 0
-    Started: 0
-    Dead: 0
-    Map:
-      X: 0
-      Y: 0
-      Width: 0
-      Height: 0
-      Layers: []
-  Character: {fileID: 1765248177}
-  Mobs: []
-  TileMap: {fileID: 1521324645}
-  Indicator: {fileID: 727403818}
-  PathFinder: {fileID: 1704470578}
 --- !u!1 &1332603248
 GameObject:
   m_ObjectHideFlags: 0
@@ -1036,7 +1006,6 @@ MonoBehaviour:
   Name: 
   Lit: 0
   Target: {fileID: 0}
-  LightRadius: 3
   Path: []
 --- !u!1 &1970660174
 GameObject:
@@ -1135,6 +1104,11 @@ MonoBehaviour:
   ZoomMinMin: 0.8
   ZoomMax: 32
   ZoomMaxMax: 40
+  Character: {fileID: 1765248177}
+  Mobs: []
+  TileMap: {fileID: 1521324645}
+  Indicator: {fileID: 727403818}
+  PathFinder: {fileID: 1704470578}
 --- !u!1 &2052598018
 GameObject:
   m_ObjectHideFlags: 0
