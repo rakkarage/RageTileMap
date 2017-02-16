@@ -3524,7 +3524,7 @@ public partial class TownTileMap : TileMap
 	}
 	void SetLight(int x, int y, Tile light, bool test)
 	{
-		if (InsideMap(x, y))
+		if (InsideEdge(x, y))
 		{
 			var index = TileIndex(x, y);
 			var existing = GetTile((int)Layer.Light, index);
@@ -3606,7 +3606,7 @@ public partial class TownTileMap : TileMap
 							SetLight((int)mx, (int)my, light, true);
 						}
 					}
-					if (!InsideMap((int)mx, (int)my))
+					if (!InsideEdge((int)mx, (int)my))
 						continue;
 					if (isBlocked)
 					{
