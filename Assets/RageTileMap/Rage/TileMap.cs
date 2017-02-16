@@ -325,12 +325,16 @@ namespace ca.HenrySoftware.Rage
 				tp = new Vector2(tp.x * ppu, tp.y * ppu);
 				tp.y = height - tp.y - ppu;
 				var rect = new Rect(tp.x, tp.y, ppu, ppu);
-				var temp0 = uv[index + 0] = new Vector2(rect.xMin / width, rect.yMin / height);
-				var temp1 = uv[index + 1] = new Vector2(rect.xMax / width, rect.yMin / height);
-				var temp2 = uv[index + 2] = new Vector2(rect.xMin / width, rect.yMax / height);
-				var temp3 = uv[index + 3] = new Vector2(rect.xMax / width, rect.yMax / height);
+				uv[index + 0] = new Vector2(rect.xMin / width, rect.yMin / height);
+				uv[index + 1] = new Vector2(rect.xMax / width, rect.yMin / height);
+				uv[index + 2] = new Vector2(rect.xMin / width, rect.yMax / height);
+				uv[index + 3] = new Vector2(rect.xMax / width, rect.yMax / height);
 				if ((flags & TileFlags.Rot90) == TileFlags.Rot90)
 				{
+					var temp0 = uv[index + 0];
+					var temp1 = uv[index + 1];
+					var temp2 = uv[index + 2];
+					var temp3 = uv[index + 3];
 					uv[index + 0] = temp2;
 					uv[index + 1] = temp0;
 					uv[index + 2] = temp3;
@@ -338,6 +342,10 @@ namespace ca.HenrySoftware.Rage
 				}
 				if ((flags & TileFlags.FlipX) == TileFlags.FlipX)
 				{
+					var temp0 = uv[index + 0];
+					var temp1 = uv[index + 1];
+					var temp2 = uv[index + 2];
+					var temp3 = uv[index + 3];
 					uv[index + 0] = temp1;
 					uv[index + 1] = temp0;
 					uv[index + 2] = temp3;
@@ -345,6 +353,10 @@ namespace ca.HenrySoftware.Rage
 				}
 				if ((flags & TileFlags.FlipY) == TileFlags.FlipY)
 				{
+					var temp0 = uv[index + 0];
+					var temp1 = uv[index + 1];
+					var temp2 = uv[index + 2];
+					var temp3 = uv[index + 3];
 					uv[index + 0] = temp2;
 					uv[index + 1] = temp3;
 					uv[index + 2] = temp0;

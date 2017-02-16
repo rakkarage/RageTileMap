@@ -3594,7 +3594,7 @@ public partial class TownTileMap : TileMap
 					}
 					if ((x == 0) && (y >= 1) && (y <= State.Height - 2)) // w
 					{
-						SetTileFlags((int)Layer.Back, x, y, RandomFlipX() | TileFlags.Rot90);
+						SetTileFlags((int)Layer.Back, x, y, RandomFlipY() | TileFlags.Rot90);
 					}
 					else if ((x == State.Width - 1) && (y >= 1) && (y <= State.Height - 2)) // e
 					{
