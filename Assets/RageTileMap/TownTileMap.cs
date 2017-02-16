@@ -3159,15 +3159,195 @@ public partial class TownTileMap : TileMap
 		new Tile[] { Tile.BannerB0, Tile.BannerB0, Tile.BannerB0, Tile.BannerB0, Tile.BannerB0 }.Cast<int>().ToArray(),
 		new Tile[] { Tile.BannerB4, Tile.BannerB3, Tile.BannerB2, Tile.BannerB1, Tile.BannerB0 }.Cast<int>().ToArray()
 	};
+	const float _waterSpeed = 8f;
+	const float _fogSpeed = 4f;
+	const float _lampSpeed = 8f;
+	const float _smokeSpeed = 4f;
+	static readonly int[] _shallowBack = new Tile[] { Tile.WaterShallowBack0, Tile.WaterShallowBack1, Tile.WaterShallowBack2, Tile.WaterShallowBack3, Tile.WaterShallowBack4, Tile.WaterShallowBack5, Tile.WaterShallowBack6 }.Cast<int>().ToArray();
+	static readonly int[] _deepBack = new Tile[] { Tile.WaterDeepBack0, Tile.WaterDeepBack1, Tile.WaterDeepBack2, Tile.WaterDeepBack3, Tile.WaterDeepBack4, Tile.WaterDeepBack5, Tile.WaterDeepBack6 }.Cast<int>().ToArray();
+	static readonly int[] _shallowFront = new Tile[] { Tile.WaterShallowFront0, Tile.WaterShallowFront1, Tile.WaterShallowFront2, Tile.WaterShallowFront3, Tile.WaterShallowFront4, Tile.WaterShallowFront5, Tile.WaterShallowFront6 }.Cast<int>().ToArray();
+	static readonly int[] _deepFront = new Tile[] { Tile.WaterDeepFront0, Tile.WaterDeepFront1, Tile.WaterDeepFront2, Tile.WaterDeepFront3, Tile.WaterDeepFront4, Tile.WaterDeepFront5, Tile.WaterDeepFront6 }.Cast<int>().ToArray();
+	static readonly int[] _shallowBackGreen = new Tile[] { Tile.GreenWaterShallowBack0, Tile.GreenWaterShallowBack1, Tile.GreenWaterShallowBack2, Tile.GreenWaterShallowBack3, Tile.GreenWaterShallowBack4, Tile.GreenWaterShallowBack5, Tile.GreenWaterShallowBack6 }.Cast<int>().ToArray();
+	static readonly int[] _deepBackGreen = new Tile[] { Tile.GreenWaterDeepBack0, Tile.GreenWaterDeepBack1, Tile.GreenWaterDeepBack2, Tile.GreenWaterDeepBack3, Tile.GreenWaterDeepBack4, Tile.GreenWaterDeepBack5, Tile.GreenWaterDeepBack6 }.Cast<int>().ToArray();
+	static readonly int[] _shallowFrontGreen = new Tile[] { Tile.GreenWaterShallowFront0, Tile.GreenWaterShallowFront1, Tile.GreenWaterShallowFront2, Tile.GreenWaterShallowFront3, Tile.GreenWaterShallowFront4, Tile.GreenWaterShallowFront5, Tile.GreenWaterShallowFront6 }.Cast<int>().ToArray();
+	static readonly int[] _deepFrontGreen = new Tile[] { Tile.GreenWaterDeepFront0, Tile.GreenWaterDeepFront1, Tile.GreenWaterDeepFront2, Tile.GreenWaterDeepFront3, Tile.GreenWaterDeepFront4, Tile.GreenWaterDeepFront5, Tile.GreenWaterDeepFront6 }.Cast<int>().ToArray();
+	static readonly int[] _fogHeavyPurpleFore = new Tile[] { Tile.FogHeavyPurpleBottom0, Tile.FogHeavyPurpleBottom1, Tile.FogHeavyPurpleBottom2, Tile.FogHeavyPurpleBottom3, Tile.FogHeavyPurpleBottom4, Tile.FogHeavyPurpleBottom5, Tile.FogHeavyPurpleBottom6, Tile.FogHeavyPurpleBottom7 }.Cast<int>().ToArray();
+	static readonly int[] _fogHeavyPurpleBack = new Tile[] { Tile.FogHeavyPurpleTop0, Tile.FogHeavyPurpleTop1, Tile.FogHeavyPurpleTop2, Tile.FogHeavyPurpleTop3, Tile.FogHeavyPurpleTop4, Tile.FogHeavyPurpleTop5, Tile.FogHeavyPurpleTop6, Tile.FogHeavyPurpleTop7 }.Cast<int>().ToArray();
+	static readonly int[] _fogHeavyRedFore = new Tile[] { Tile.FogHeavyRedBottom0, Tile.FogHeavyRedBottom1, Tile.FogHeavyRedBottom2, Tile.FogHeavyRedBottom3, Tile.FogHeavyRedBottom4, Tile.FogHeavyRedBottom5, Tile.FogHeavyRedBottom6, Tile.FogHeavyRedBottom7 }.Cast<int>().ToArray();
+	static readonly int[] _fogHeavyRedBack = new Tile[] { Tile.FogHeavyRedTop0, Tile.FogHeavyRedTop1, Tile.FogHeavyRedTop2, Tile.FogHeavyRedTop3, Tile.FogHeavyRedTop4, Tile.FogHeavyRedTop5, Tile.FogHeavyRedTop6, Tile.FogHeavyRedTop7 }.Cast<int>().ToArray();
+	static readonly int[] _fogHeavyBlueFore = new Tile[] { Tile.FogHeavyBlueBottom0, Tile.FogHeavyBlueBottom1, Tile.FogHeavyBlueBottom2, Tile.FogHeavyBlueBottom3, Tile.FogHeavyBlueBottom4, Tile.FogHeavyBlueBottom5, Tile.FogHeavyBlueBottom6, Tile.FogHeavyBlueBottom7 }.Cast<int>().ToArray();
+	static readonly int[] _fogHeavyBlueBack = new Tile[] { Tile.FogHeavyBlueTop0, Tile.FogHeavyBlueTop1, Tile.FogHeavyBlueTop2, Tile.FogHeavyBlueTop3, Tile.FogHeavyBlueTop4, Tile.FogHeavyBlueTop5, Tile.FogHeavyBlueTop6, Tile.FogHeavyBlueTop7 }.Cast<int>().ToArray();
+	static readonly int[] _fogHeavyGreenFore = new Tile[] { Tile.FogHeavyGreenBottom0, Tile.FogHeavyGreenBottom1, Tile.FogHeavyGreenBottom2, Tile.FogHeavyGreenBottom3, Tile.FogHeavyGreenBottom4, Tile.FogHeavyGreenBottom5, Tile.FogHeavyGreenBottom6, Tile.FogHeavyGreenBottom7 }.Cast<int>().ToArray();
+	static readonly int[] _fogHeavyGreenBack = new Tile[] { Tile.FogHeavyGreenTop0, Tile.FogHeavyGreenTop1, Tile.FogHeavyGreenTop2, Tile.FogHeavyGreenTop3, Tile.FogHeavyGreenTop4, Tile.FogHeavyGreenTop5, Tile.FogHeavyGreenTop6, Tile.FogHeavyGreenTop7 }.Cast<int>().ToArray();
+	static readonly int[] _fogHeavyBlackFore = new Tile[] { Tile.FogHeavyBlackBottom0, Tile.FogHeavyBlackBottom1, Tile.FogHeavyBlackBottom2, Tile.FogHeavyBlackBottom3, Tile.FogHeavyBlackBottom4, Tile.FogHeavyBlackBottom5, Tile.FogHeavyBlackBottom6, Tile.FogHeavyBlackBottom7 }.Cast<int>().ToArray();
+	static readonly int[] _fogHeavyBlackBack = new Tile[] { Tile.FogHeavyBlackTop0, Tile.FogHeavyBlackTop1, Tile.FogHeavyBlackTop2, Tile.FogHeavyBlackTop3, Tile.FogHeavyBlackTop4, Tile.FogHeavyBlackTop5, Tile.FogHeavyBlackTop6, Tile.FogHeavyBlackTop7 }.Cast<int>().ToArray();
+	static readonly int[] _fogLightPurpleFore = new Tile[] { Tile.FogLightPurpleBottom0, Tile.FogLightPurpleBottom1, Tile.FogLightPurpleBottom2, Tile.FogLightPurpleBottom3, Tile.FogLightPurpleBottom4, Tile.FogLightPurpleBottom5, Tile.FogLightPurpleBottom6, Tile.FogLightPurpleBottom7 }.Cast<int>().ToArray();
+	static readonly int[] _fogLightPurpleBack = new Tile[] { Tile.FogLightPurpleTop0, Tile.FogLightPurpleTop1, Tile.FogLightPurpleTop2, Tile.FogLightPurpleTop3, Tile.FogLightPurpleTop4, Tile.FogLightPurpleTop5, Tile.FogLightPurpleTop6, Tile.FogLightPurpleTop7 }.Cast<int>().ToArray();
+	static readonly int[] _fogLightRedFore = new Tile[] { Tile.FogLightRedBottom0, Tile.FogLightRedBottom1, Tile.FogLightRedBottom2, Tile.FogLightRedBottom3, Tile.FogLightRedBottom4, Tile.FogLightRedBottom5, Tile.FogLightRedBottom6, Tile.FogLightRedBottom7 }.Cast<int>().ToArray();
+	static readonly int[] _fogLightRedBack = new Tile[] { Tile.FogLightRedTop0, Tile.FogLightRedTop1, Tile.FogLightRedTop2, Tile.FogLightRedTop3, Tile.FogLightRedTop4, Tile.FogLightRedTop5, Tile.FogLightRedTop6, Tile.FogLightRedTop7 }.Cast<int>().ToArray();
+	static readonly int[] _fogLightBlueFore = new Tile[] { Tile.FogLightBlueBottom0, Tile.FogLightBlueBottom1, Tile.FogLightBlueBottom2, Tile.FogLightBlueBottom3, Tile.FogLightBlueBottom4, Tile.FogLightBlueBottom5, Tile.FogLightBlueBottom6, Tile.FogLightBlueBottom7 }.Cast<int>().ToArray();
+	static readonly int[] _fogLightBlueBack = new Tile[] { Tile.FogLightBlueTop0, Tile.FogLightBlueTop1, Tile.FogLightBlueTop2, Tile.FogLightBlueTop3, Tile.FogLightBlueTop4, Tile.FogLightBlueTop5, Tile.FogLightBlueTop6, Tile.FogLightBlueTop7 }.Cast<int>().ToArray();
+	static readonly int[] _fogLightGreenFore = new Tile[] { Tile.FogLightGreenBottom0, Tile.FogLightGreenBottom1, Tile.FogLightGreenBottom2, Tile.FogLightGreenBottom3, Tile.FogLightGreenBottom4, Tile.FogLightGreenBottom5, Tile.FogLightGreenBottom6, Tile.FogLightGreenBottom7 }.Cast<int>().ToArray();
+	static readonly int[] _fogLightGreenBack = new Tile[] { Tile.FogLightGreenTop0, Tile.FogLightGreenTop1, Tile.FogLightGreenTop2, Tile.FogLightGreenTop3, Tile.FogLightGreenTop4, Tile.FogLightGreenTop5, Tile.FogLightGreenTop6, Tile.FogLightGreenTop7 }.Cast<int>().ToArray();
+	static readonly int[] _fogLightBlackFore = new Tile[] { Tile.FogLightBlackBottom0, Tile.FogLightBlackBottom1, Tile.FogLightBlackBottom2, Tile.FogLightBlackBottom3, Tile.FogLightBlackBottom4, Tile.FogLightBlackBottom5, Tile.FogLightBlackBottom6, Tile.FogLightBlackBottom7 }.Cast<int>().ToArray();
+	static readonly int[] _fogLightBlackBack = new Tile[] { Tile.FogLightBlackTop0, Tile.FogLightBlackTop1, Tile.FogLightBlackTop2, Tile.FogLightBlackTop3, Tile.FogLightBlackTop4, Tile.FogLightBlackTop5, Tile.FogLightBlackTop6, Tile.FogLightBlackTop7 }.Cast<int>().ToArray();
+	static readonly int[] _portal = new Tile[] { Tile.Portal0, Tile.Portal1, Tile.Portal2, Tile.Portal3, Tile.Portal4 }.Cast<int>().ToArray();
+	static readonly int[] _bugs = new Tile[] { Tile.TownGrid01, Tile.TownGrid02, Tile.TownGrid03, Tile.TownGrid04, Tile.TownGrid05 }.Cast<int>().ToArray();
+	static readonly int[] _fountain = new Tile[] { Tile.Fountain0, Tile.Fountain1, Tile.Fountain2, Tile.Fountain3, Tile.Fountain4, Tile.Fountain5 }.Cast<int>().ToArray();
+	static readonly int[][] _lamps =
+						{
+							new Tile[] {
+								Tile.TownGrid18,
+								Tile.TownGrid19,
+								Tile.TownGrid1A,
+								Tile.TownGrid19,
+							}.Cast<int>().ToArray(),
+							new Tile[] {
+								Tile.TownGrid18,
+								Tile.TownGrid19,
+								Tile.TownGrid1A,
+								Tile.TownGrid19,
+
+								Tile.TownGrid18,
+								Tile.TownGrid19,
+								Tile.TownGrid1A,
+								Tile.TownGrid19,
+
+								Tile.TownGrid18,
+								Tile.TownGrid19,
+								Tile.TownGrid1A,
+								Tile.TownGrid19,
+							}.Cast<int>().ToArray(),
+							new Tile[] {
+								Tile.TownGrid18,
+								Tile.TownGrid19,
+								Tile.TownGrid1A,
+								Tile.TownGrid1B,
+								Tile.TownGrid1A,
+								Tile.TownGrid19,
+							}.Cast<int>().ToArray(),
+							new Tile[] {
+								Tile.TownGrid18,
+								Tile.TownGrid19,
+								Tile.TownGrid1A,
+								Tile.TownGrid1B,
+								Tile.TownGrid1A,
+								Tile.TownGrid19,
+
+								Tile.TownGrid18,
+								Tile.TownGrid19,
+								Tile.TownGrid1A,
+								Tile.TownGrid1B,
+								Tile.TownGrid1A,
+								Tile.TownGrid19,
+
+								Tile.TownGrid18,
+								Tile.TownGrid19,
+								Tile.TownGrid1A,
+								Tile.TownGrid1B,
+								Tile.TownGrid1A,
+								Tile.TownGrid19,
+							}.Cast<int>().ToArray(),
+							new Tile[] {
+								Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18,
+								Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18,
+								Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18,
+								Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18
+							}.Cast<int>().ToArray(),
+							new Tile[] {
+								Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18,
+								Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18,
+								Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18,
+								Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18,
+								Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18,
+								Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18,
+								Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18,
+								Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18, Tile.TownGrid18
+							}.Cast<int>().ToArray(),
+							new Tile[] {
+								Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B,
+								Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B,
+								Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B,
+								Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B
+							}.Cast<int>().ToArray(),
+							new Tile[] {
+								Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B,
+								Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B,
+								Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B,
+								Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B,
+								Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B,
+								Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B,
+								Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B,
+								Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B, Tile.TownGrid1B
+							}.Cast<int>().ToArray()
+						};
+	static readonly int[] _outhouseBird0 = new Tile[] { Tile.TownOuthouseBird00, Tile.TownOuthouseBird10, Tile.TownOuthouseBird20, Tile.TownOuthouseBird30, Tile.TownOuthouseBird40, Tile.TownOuthouseBird50, Tile.TownOuthouseBird60, Tile.TownOuthouseBird70, Tile.TownOuthouseBird80 }.Cast<int>().ToArray();
+	static readonly int[] _outhouseBird1 = new Tile[] { Tile.TownOuthouseBird01, Tile.TownOuthouseBird11, Tile.TownOuthouseBird21, Tile.TownOuthouseBird31, Tile.TownOuthouseBird41, Tile.TownOuthouseBird51, Tile.TownOuthouseBird61, Tile.TownOuthouseBird71, Tile.TownOuthouseBird81 }.Cast<int>().ToArray();
+	static readonly int[] _homeSmoke0 = new Tile[] { Tile.TownHomeSmoke000, Tile.TownHomeSmoke100, Tile.TownHomeSmoke200, Tile.TownHomeSmoke300, Tile.TownHomeSmoke400, Tile.TownHomeSmoke500 }.Cast<int>().ToArray();
+	static readonly int[] _homeSmoke1 = new Tile[] { Tile.TownHomeSmoke010, Tile.TownHomeSmoke110, Tile.TownHomeSmoke210, Tile.TownHomeSmoke310, Tile.TownHomeSmoke410, Tile.TownHomeSmoke510 }.Cast<int>().ToArray();
+	static readonly int[] _homeSmoke2 = new Tile[] { Tile.TownHomeSmoke001, Tile.TownHomeSmoke101, Tile.TownHomeSmoke201, Tile.TownHomeSmoke301, Tile.TownHomeSmoke401, Tile.TownHomeSmoke501 }.Cast<int>().ToArray();
+	static readonly int[] _homeSmoke3 = new Tile[] { Tile.TownHomeSmoke011, Tile.TownHomeSmoke111, Tile.TownHomeSmoke211, Tile.TownHomeSmoke311, Tile.TownHomeSmoke411, Tile.TownHomeSmoke511 }.Cast<int>().ToArray();
+	static readonly int[] _rockSmoke0 = new Tile[] { Tile.TownRockSmoke00, Tile.TownRockSmoke10, Tile.TownRockSmoke20, Tile.TownRockSmoke30, Tile.TownRockSmoke40 }.Cast<int>().ToArray();
+	static readonly int[] _rockSmoke1 = new Tile[] { Tile.TownRockSmoke01, Tile.TownRockSmoke11, Tile.TownRockSmoke21, Tile.TownRockSmoke31, Tile.TownRockSmoke41 }.Cast<int>().ToArray();
+	static readonly int[] _shopSmoke0 = new Tile[] { Tile.TownShopSmoke00, Tile.TownShopSmoke10, Tile.TownShopSmoke20, Tile.TownShopSmoke30, Tile.TownShopSmoke40, Tile.TownShopSmoke50 }.Cast<int>().ToArray();
+	static readonly int[] _shopSmoke1 = new Tile[] { Tile.TownShopSmoke01, Tile.TownShopSmoke11, Tile.TownShopSmoke21, Tile.TownShopSmoke31, Tile.TownShopSmoke41, Tile.TownShopSmoke51 }.Cast<int>().ToArray();
+	static readonly int[] _shopSmoke2 = new Tile[] { Tile.TownShopSmoke02, Tile.TownShopSmoke12, Tile.TownShopSmoke22, Tile.TownShopSmoke32, Tile.TownShopSmoke42, Tile.TownShopSmoke52 }.Cast<int>().ToArray();
+	static readonly int[] _tavernSmoke0 = new Tile[] { Tile.TownTavernSmoke00, Tile.TownTavernSmoke10, Tile.TownTavernSmoke20, Tile.TownTavernSmoke30, Tile.TownTavernSmoke40, Tile.TownTavernSmoke50 }.Cast<int>().ToArray();
+	static readonly int[] _tavernSmoke1 = new Tile[] { Tile.TownTavernSmoke01, Tile.TownTavernSmoke11, Tile.TownTavernSmoke21, Tile.TownTavernSmoke31, Tile.TownTavernSmoke41, Tile.TownTavernSmoke51 }.Cast<int>().ToArray();
 	protected override List<Animation> GetAnimations()
 	{
-	    var animations = new List<Animation>
-	    {
-	        new Animation() {Frames = new int[][] {_torch}, Fps = _torchSpeed},
-	        new Animation() {Frames = _bannerA, Fps = _bannerSpeed},
-	        new Animation() {Frames = _bannerB, Fps = _bannerSpeed}
-	    };
-	    return animations;
+		var animations = new List<Animation>
+		{
+			new Animation() { Frames = new int[][] {_torch}, Fps = _torchSpeed },
+			new Animation() { Frames = _bannerA, Fps = _bannerSpeed },
+			new Animation() { Frames = _bannerB, Fps = _bannerSpeed },
+			new Animation() { Frames = new int[][] { _shallowBack }, Fps = _waterSpeed },
+			new Animation() { Frames = new int[][] { _deepBack }, Fps = _waterSpeed },
+			new Animation() { Frames = new int[][] { _shallowFront }, Fps = _waterSpeed },
+			new Animation() { Frames = new int[][] { _deepFront }, Fps = _waterSpeed },
+			new Animation() { Frames = new int[][] { _shallowBackGreen }, Fps = _waterSpeed },
+			new Animation() { Frames = new int[][] { _deepBackGreen }, Fps = _waterSpeed },
+			new Animation() { Frames = new int[][] { _shallowFrontGreen }, Fps = _waterSpeed },
+			new Animation() { Frames = new int[][] { _deepFrontGreen }, Fps = _waterSpeed },
+			new Animation() { Frames = new int[][] { _fogHeavyPurpleFore }, Fps = _fogSpeed },
+			new Animation() { Frames = new int[][] { _fogHeavyPurpleBack }, Fps = _fogSpeed },
+			new Animation() { Frames = new int[][] { _fogHeavyRedFore }, Fps = _fogSpeed },
+			new Animation() { Frames = new int[][] { _fogHeavyRedBack }, Fps = _fogSpeed },
+			new Animation() { Frames = new int[][] { _fogHeavyBlueFore }, Fps = _fogSpeed },
+			new Animation() { Frames = new int[][] { _fogHeavyBlueBack }, Fps = _fogSpeed },
+			new Animation() { Frames = new int[][] { _fogHeavyGreenFore }, Fps = _fogSpeed },
+			new Animation() { Frames = new int[][] { _fogHeavyGreenBack }, Fps = _fogSpeed },
+			new Animation() { Frames = new int[][] { _fogHeavyBlackFore }, Fps = _fogSpeed },
+			new Animation() { Frames = new int[][] { _fogHeavyBlackBack }, Fps = _fogSpeed },
+			new Animation() { Frames = new int[][] { _fogLightPurpleFore }, Fps = _fogSpeed },
+			new Animation() { Frames = new int[][] { _fogLightPurpleBack }, Fps = _fogSpeed },
+			new Animation() { Frames = new int[][] { _fogLightRedFore }, Fps = _fogSpeed },
+			new Animation() { Frames = new int[][] { _fogLightRedBack }, Fps = _fogSpeed },
+			new Animation() { Frames = new int[][] { _fogLightBlueFore }, Fps = _fogSpeed },
+			new Animation() { Frames = new int[][] { _fogLightBlueBack }, Fps = _fogSpeed },
+			new Animation() { Frames = new int[][] { _fogLightGreenFore }, Fps = _fogSpeed },
+			new Animation() { Frames = new int[][] { _fogLightGreenBack }, Fps = _fogSpeed },
+			new Animation() { Frames = new int[][] { _fogLightBlackFore }, Fps = _fogSpeed },
+			new Animation() { Frames = new int[][] { _fogLightBlackBack }, Fps = _fogSpeed },
+			new Animation() { Frames = new int[][] { _portal }, Fps = _waterSpeed },
+			new Animation() { Frames = new int[][] { _bugs }, Fps = _waterSpeed },
+			new Animation() { Frames = new int[][] { _fountain }, Fps = _waterSpeed },
+			new Animation() { Frames = _lamps, Fps = _lampSpeed },
+			new Animation() { Frames = new int[][] { _outhouseBird0 }, Fps = _smokeSpeed },
+			new Animation() { Frames = new int[][] { _outhouseBird1 }, Fps = _smokeSpeed },
+			new Animation() { Frames = new int[][] { _homeSmoke0 }, Fps = _smokeSpeed },
+			new Animation() { Frames = new int[][] { _homeSmoke1 }, Fps = _smokeSpeed },
+			new Animation() { Frames = new int[][] { _homeSmoke2 }, Fps = _smokeSpeed },
+			new Animation() { Frames = new int[][] { _homeSmoke3 }, Fps = _smokeSpeed },
+			new Animation() { Frames = new int[][] { _rockSmoke0 }, Fps = _smokeSpeed },
+			new Animation() { Frames = new int[][] { _rockSmoke1 }, Fps = _smokeSpeed },
+			new Animation() { Frames = new int[][] { _shopSmoke0 }, Fps = _smokeSpeed },
+			new Animation() { Frames = new int[][] { _shopSmoke1 }, Fps = _smokeSpeed },
+			new Animation() { Frames = new int[][] { _shopSmoke2 }, Fps = _smokeSpeed },
+			new Animation() { Frames = new int[][] { _tavernSmoke0 }, Fps = _smokeSpeed },
+			new Animation() { Frames = new int[][] { _tavernSmoke1 }, Fps = _smokeSpeed }
+		};
+		return animations;
 	}
 	public override bool Blocked(int index)
 	{
@@ -3313,12 +3493,12 @@ public partial class TownTileMap : TileMap
 			SetTile((int)Layer.Fore, i, 2, RandomWall());
 		SetTile((int)Layer.Fore, maxX, 1, (int)Tile.StairsDown);
 	}
-    const int TorchRadius = 5;
-    int RandomTorchRadius()
-    {
-        return Utility.Random.Next(TorchRadius) + 1;
-    }
-    public const int LightRadius = 7;
+	const int TorchRadius = 5;
+	int RandomTorchRadius()
+	{
+		return Utility.Random.Next(TorchRadius) + 1;
+	}
+	public const int LightRadius = 7;
 	Tile _themeLightMin = Tile.Light0;
 	Tile _themeLightMax = Tile.Light31;
 	const int _lightExploredOffset = 7;

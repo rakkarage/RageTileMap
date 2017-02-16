@@ -34,8 +34,8 @@ namespace ca.HenrySoftware.Rage
 		{
 			yield return null;
 			_turn = true;
-			var p = Manager.Instance.Character.transform.localPosition;
-			Manager.Instance.Indicator.SetTargetPosition((int)p.x, (int)p.y, false);
+			var p = Character.transform.localPosition;
+			Indicator.SetTargetPosition((int)p.x, (int)p.y, false);
 		}
 		public IEnumerator TurnTimer()
 		{
@@ -48,10 +48,10 @@ namespace ca.HenrySoftware.Rage
 				{
 					_turn = false;
 					_totalTurns++;
-					Manager.Instance.Character.Turn();
-					Manager.Instance.TileMap.Turn();
+					Character.Turn();
+					TileMap.Turn();
 					CheckCenter();
-					MiniMap.Instance.UpdateMiniMap(Manager.Instance.Character.transform.localPosition);
+					MiniMap.Instance.UpdateMiniMap(Character.transform.localPosition);
 				}
 			}
 		}
@@ -64,27 +64,27 @@ namespace ca.HenrySoftware.Rage
 			if (_drag) return;
 			var w = GameCamera.ScreenToWorldPoint(e.position);
 			var p = new Vector2(Mathf.Round(w.x), Mathf.Round(w.y));
-			Manager.Instance.Character.Face(p);
-			if (Manager.Instance.TileMap.InsideMap(p)) // valid click
+			Character.Face(p);
+			if (TileMap.InsideMap(p)) // valid click
 			{
-				if (p.Equals(Manager.Instance.Character.transform.localPosition)) // on character remove path
+				if (p.Equals(Character.transform.localPosition)) // on character remove path
 				{
-					if (p.Equals(Manager.Instance.Indicator.TargetTarget)) // no path skip turn
+					if (p.Equals(Indicator.TargetTarget)) // no path skip turn
 						ResetTurn();
-					Manager.Instance.Character.FindPathTo(Manager.Instance.Character.transform.localPosition);
-					Manager.Instance.PathFinder.RemovePath();
-					Manager.Instance.Indicator.TargetOff();
+					Character.FindPathTo(Character.transform.localPosition);
+					PathFinder.RemovePath();
+					Indicator.TargetOff();
 				}
-				else if (p.Equals(Manager.Instance.Indicator.TargetTarget)) // on indicator walk path
+				else if (p.Equals(Indicator.TargetTarget)) // on indicator walk path
 				{
 					ResetTurn();
 				}
 				else // else find path
 				{
-					var cp = Manager.Instance.Character.transform.localPosition;
-					Manager.Instance.Character.FindPathTo(p);
-					Manager.Instance.Indicator.TargetOn();
-					Manager.Instance.Indicator.SetTargetPosition((int)p.x, (int)p.y, true);
+					var cp = Character.transform.localPosition;
+					Character.FindPathTo(p);
+					Indicator.TargetOn();
+					Indicator.SetTargetPosition((int)p.x, (int)p.y, true);
 				}
 			}
 		}
@@ -148,7 +148,7 @@ namespace ca.HenrySoftware.Rage
 		{
 			var bottomLeft = GameCamera.ScreenToWorldPoint(Vector2.zero);
 			var topRight = GameCamera.ScreenToWorldPoint(new Vector2(GameCamera.pixelWidth, GameCamera.pixelHeight));
-			var test = Manager.Instance.Character.transform.localPosition;
+			var test = Character.transform.localPosition;
 			if ((test.x - _edgeOffset < bottomLeft.x) ||
 				(test.y - _edgeOffset < bottomLeft.y) ||
 				(test.x + _edgeOffset > topRight.x) ||
@@ -160,7 +160,7 @@ namespace ca.HenrySoftware.Rage
 		public void CenterOnCharacter(bool animate = false)
 		{
 			if (!_drag)
-				CenterOn(Manager.Instance.Character.transform.localPosition, animate);
+				CenterOn(Character.transform.localPosition, animate);
 		}
 		public void CenterOn(Vector2 p, bool animate = false)
 		{
@@ -184,7 +184,7 @@ namespace ca.HenrySoftware.Rage
 			else
 				GameCamera.orthographicSize = Mathf.RoundToInt(size);
 			var boundsCamera = GameCamera.OrthographicBounds();
-			var boundsMap = Manager.Instance.TileMap.Mesh.bounds;
+			var boundsMap = TileMap.Mesh.bounds;
 			boundsMap.center = new Vector2((int)(boundsMap.center.x - .5f), (int)(boundsMap.center.y - .5f));
 			var boundsTest = boundsMap;
 			boundsTest.extents -= new Vector3(2f, 2f, 0f);

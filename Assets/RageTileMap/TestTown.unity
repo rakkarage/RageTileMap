@@ -678,6 +678,20 @@ MonoBehaviour:
   - Edge
   LayerMaterials:
   - {fileID: 2100000, guid: 54bb32eab2da9e14f97af4996fe7515b, type: 2}
+  - {fileID: 2100000, guid: 54bb32eab2da9e14f97af4996fe7515b, type: 2}
+  - {fileID: 2100000, guid: 54bb32eab2da9e14f97af4996fe7515b, type: 2}
+  - {fileID: 2100000, guid: 54bb32eab2da9e14f97af4996fe7515b, type: 2}
+  - {fileID: 2100000, guid: 54bb32eab2da9e14f97af4996fe7515b, type: 2}
+  - {fileID: 2100000, guid: 80066fd6a387a204a8ceb160fbe6ac6e, type: 2}
+  - {fileID: 2100000, guid: 54bb32eab2da9e14f97af4996fe7515b, type: 2}
+  - {fileID: 2100000, guid: 54bb32eab2da9e14f97af4996fe7515b, type: 2}
+  - {fileID: 2100000, guid: 54bb32eab2da9e14f97af4996fe7515b, type: 2}
+  - {fileID: 2100000, guid: 80066fd6a387a204a8ceb160fbe6ac6e, type: 2}
+  - {fileID: 2100000, guid: 54bb32eab2da9e14f97af4996fe7515b, type: 2}
+  - {fileID: 2100000, guid: 54bb32eab2da9e14f97af4996fe7515b, type: 2}
+  - {fileID: 2100000, guid: 54bb32eab2da9e14f97af4996fe7515b, type: 2}
+  - {fileID: 2100000, guid: 54bb32eab2da9e14f97af4996fe7515b, type: 2}
+  - {fileID: 2100000, guid: 54bb32eab2da9e14f97af4996fe7515b, type: 2}
   State:
     X: 0
     Y: 0
