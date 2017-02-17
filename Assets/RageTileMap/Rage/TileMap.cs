@@ -437,7 +437,7 @@ namespace ca.HenrySoftware.Rage
 		}
 		public bool IsDoor(Vector2 p) { return IsDoor((int)p.x, (int)p.y); }
 		public bool IsDoor(int x, int y) { return IsDoor(TileIndex(x, y)); }
-		public bool IsDoor(int index)
+		public virtual bool IsDoor(int index)
 		{
 			return IsDoorOpen(index) || IsDoorShut(index);
 		}

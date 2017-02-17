@@ -3396,6 +3396,15 @@ public partial class TownTileMap : TileMap
 		}
 		return false;
 	}
+	public override bool IsDoor(int index)
+	{
+		return IsDoorOpen(index) || IsDoorShut(index) || IsDoorTown(index);
+	}
+	public bool IsDoorTown(int index)
+	{
+		var fore = GetTile((int)Layer.Fore, index);
+		return ((fore == (int)Tile.TownTavern21) || (fore == (int)Tile.TownShop21) || (fore == (int)Tile.TownHome22));
+	}
 	public override bool IsDoorOpen(int index)
 	{
 		var fore = GetTile((int)Layer.Fore, index);
@@ -3418,12 +3427,17 @@ public partial class TownTileMap : TileMap
 	public override bool IsStairDown(int index)
 	{
 		var fore = GetTile((int)Layer.Fore, index);
-		return fore == (int)Tile.StairsDown;
+		return ((fore == (int)Tile.StairsDown) ||
+			(fore == (int)Tile.GrassStairsDown) || (fore == (int)Tile.DesertStairsDown) ||
+			(fore == (int)Tile.NightGrassStairsDown) || (fore == (int)Tile.NightDesertStairsDown) ||
+			(fore == (int)Tile.TownStairsDown));
 	}
 	public override bool IsStairUp(int index)
 	{
 		var fore = GetTile((int)Layer.Fore, index);
-		return fore == (int)Tile.StairsUp;
+		return ((fore == (int)Tile.StairsUp) ||
+			(fore == (int)Tile.GrassStairsUp) || (fore == (int)Tile.DesertStairsUp) ||
+			(fore == (int)Tile.NightGrassStairsUp) || (fore == (int)Tile.NightDesertStairsUp));
 	}
 	public bool IsTorch(Vector2 p) { return IsTorch((int)p.x, (int)p.y); }
 	public bool IsTorch(int x, int y) { return IsTorch(TileIndex(x, y)); }
@@ -3437,14 +3451,58 @@ public partial class TownTileMap : TileMap
 	public bool IsWall(int index)
 	{
 		var fore = GetTile((int)Layer.Fore, index);
-		return (fore >= (int)Tile.WallTorch0) && (fore <= (int)Tile.Wall7);
+		return IsTownBlocked(index) || (fore >= (int)Tile.WallTorch0) && (fore <= (int)Tile.Wall7);
 	}
 	public bool IsFloor(Vector2 p) { return IsFloor((int)p.x, (int)p.y); }
 	public bool IsFloor(int x, int y) { return IsFloor(TileIndex(x, y)); }
 	public bool IsFloor(int index)
 	{
 		var back = GetTile((int)Layer.Back, index);
-		return (back >= (int)Tile.Floor0) && (back <= (int)Tile.FloorRoom5);
+		return IsGrass(index) || (back >= (int)Tile.Floor0) && (back <= (int)Tile.FloorRoom5);
+	}
+	public bool IsGrass(int index)
+	{
+		var back = GetTile((int)Layer.Back, index);
+		if ((back >= (int)Tile.Grass0) && (back <= (int)Tile.GrassRoad2)) return true;
+		if ((back >= (int)Tile.NightGrass0) && (back <= (int)Tile.NightGrassRoad2)) return true;
+		if ((back == (int)Tile.TownGrass0) || (back == (int)Tile.TownGrass1) ||
+			(back == (int)Tile.TownGrass2) || (back == (int)Tile.TownGrass3) ||
+			(back == (int)Tile.TownOuthouseBack) || (back == (int)Tile.TownGraveBack))
+		{
+			return true;
+		}
+		if (((back >= (int)Tile.TownEdge00) && (back <= (int)Tile.TownEdge03)) ||
+			(back == (int)Tile.TownEdge10) || (back == (int)Tile.TownEdge13) ||
+			(back == (int)Tile.TownEdge20) || (back == (int)Tile.TownEdge23) ||
+			((back >= (int)Tile.TownEdge30) && (back <= (int)Tile.TownEdge33)))
+		{
+			return true;
+		}
+		return false;
+	}
+	public bool IsEdge(int index)
+	{
+		var back = GetTile((int)Layer.Back, index);
+		return ((back >= (int)Tile.EdgeNE) && (back <= (int)Tile.Edge27));
+	}
+	public bool IsWater(int index)
+	{
+		var back = GetTile((int)Layer.SplitBackWater, index);
+		return (IsWaterShallow(back) || IsWaterDeep(back));
+	}
+	public bool IsWaterShallow(int tile)
+	{
+		return (((tile >= (int)Tile.WaterShallowBack0) && (tile <= (int)Tile.WaterShallowBack6)) ||
+			((tile >= (int)Tile.WaterShallowFront0) && (tile <= (int)Tile.WaterShallowFront6)) ||
+			((tile >= (int)Tile.GreenWaterShallowBack0) && (tile <= (int)Tile.GreenWaterShallowBack6)) ||
+			((tile >= (int)Tile.GreenWaterShallowFront0) && (tile <= (int)Tile.GreenWaterShallowFront6)));
+	}
+	public bool IsWaterDeep(int tile)
+	{
+		return (((tile >= (int)Tile.WaterDeepBack0) && (tile <= (int)Tile.WaterDeepBack6)) ||
+			((tile >= (int)Tile.WaterDeepFront0) && (tile <= (int)Tile.WaterDeepFront6)) ||
+			((tile >= (int)Tile.GreenWaterDeepBack0) && (tile <= (int)Tile.GreenWaterDeepBack6)) ||
+			((tile >= (int)Tile.GreenWaterDeepFront0) && (tile <= (int)Tile.GreenWaterDeepFront6)));
 	}
 	public TextAsset MapJsonToLoad;
 	void Start()
@@ -3884,6 +3942,8 @@ public partial class TownTileMap : TileMap
 		var stairs = IsStair(index);
 		var door = IsDoor(index);
 		var floor = IsFloor(index);
+		var edge = IsEdge(index);
+		var water = IsWater(index);
 		var color = screen ? Color.magenta.SetAlpha(.5f) : Color.clear;
 		if (explored || lit)
 		{
@@ -3893,6 +3953,10 @@ public partial class TownTileMap : TileMap
 				color = Colors.BlueLight.SetAlpha(_bright);
 			else if (wall && !screen)
 				color = Colors.GreyDark.SetAlpha(_dim);
+			else if (edge && !screen)
+				color = Colors.ButtonBlue;
+			else if (water)
+				color = Colors.MapWaterLight.SetAlpha(_dim);
 			else if (floor && !screen)
 				color = Colors.Grey.SetAlpha(lit ? _dim : _unlit);
 		}
