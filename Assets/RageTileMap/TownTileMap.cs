@@ -3386,7 +3386,6 @@ public partial class TownTileMap : TileMap
 			(fore == (int)Tile.TownGrid37) || (fore == (int)Tile.TownGrid38) || (fore == (int)Tile.TownGrid39) || (fore == (int)Tile.TownGrid3A) || (fore == (int)Tile.TownGrid3B) || (fore == (int)Tile.TownGrid3C) ||
 			(fore == (int)Tile.TownGrid44) || (fore == (int)Tile.TownGrid45) || (fore == (int)Tile.TownGrid47) || (fore == (int)Tile.TownGrid48)))
 		{
-			if (light) Debug.Log("NEVER!");
 			return true;
 		}
 		else if (light &&
