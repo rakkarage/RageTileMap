@@ -56,7 +56,7 @@ public partial class TownTileMap : TileMap
 		Wall5, //26
 		Wall6, //27
 		Wall7, //28
-		// row 20 (1280 - 1333)
+			   // row 20 (1280 - 1333)
 		TreeDead0Top = 20 * TilesAcross + 56,
 		TreeDead1Top,
 		TreeDead2Top,
@@ -3351,7 +3351,50 @@ public partial class TownTileMap : TileMap
 	}
 	public override bool Blocked(int index)
 	{
-		return IsWall(index) || IsDoorShut(index);
+		return Blocked(index, false);
+	}
+	private bool Blocked(int x, int y, bool light)
+	{
+		return Blocked(TileIndex(x, y), light);
+	}
+	private bool Blocked(int index, bool light)
+	{
+		return IsWall(index) || IsDoorShut(index) || IsTownBlocked(index, light);
+	}
+	public bool IsTownBlocked(int index, bool light = false)
+	{
+		var fore = GetTile((int)Layer.Fore, index);
+		var tree = GetTile((int)Layer.Tree, index);
+		if (fore == -1 && tree == -1)
+ 			return false;
+		if ((light && (tree == (int)Tile.TownOuthouse21)) ||
+			(fore == (int)Tile.TownTavern11) || (fore == (int)Tile.TownTavern12) ||
+			(light && (fore == (int)Tile.TownTavern21)) || (fore == (int)Tile.TownTavern22) ||
+			(fore == (int)Tile.TownShop11) || (fore == (int)Tile.TownShop12) ||
+			(light && (fore == (int)Tile.TownShop21)) || (fore == (int)Tile.TownShop22) ||
+			(fore == (int)Tile.TownHome11) || (fore == (int)Tile.TownHome12) || (fore == (int)Tile.TownHome13) ||
+			(fore == (int)Tile.TownHome21) || (light && (fore == (int)Tile.TownHome22)) || (fore == (int)Tile.TownHome23) ||
+			(fore == (int)Tile.TownGrid16))
+		{
+			return true;
+		}
+		else if (!light && ((fore == (int)Tile.TownGrid00) || (fore == (int)Tile.TownGrid0C) ||
+			(fore == (int)Tile.TownGrid10) || (fore == (int)Tile.TownGrid15) || (fore == (int)Tile.TownGrid17) || (fore == (int)Tile.TownGrid1C) ||
+			(fore == (int)Tile.TownGrid20) || (fore == (int)Tile.TownGrid25) || (fore == (int)Tile.TownGrid27) || (fore == (int)Tile.TownGrid2C) ||
+			(fore == (int)Tile.TownGrid30) || (fore == (int)Tile.TownGrid31) || (fore == (int)Tile.TownGrid32) || (fore == (int)Tile.TownGrid33) || (fore == (int)Tile.TownGrid34) || (fore == (int)Tile.TownGrid35) ||
+			(fore == (int)Tile.TownGrid37) || (fore == (int)Tile.TownGrid38) || (fore == (int)Tile.TownGrid39) || (fore == (int)Tile.TownGrid3A) || (fore == (int)Tile.TownGrid3B) || (fore == (int)Tile.TownGrid3C) ||
+			(fore == (int)Tile.TownGrid44) || (fore == (int)Tile.TownGrid45) || (fore == (int)Tile.TownGrid47) || (fore == (int)Tile.TownGrid48)))
+		{
+			return true;
+		}
+		else if (light &&
+			((tree >= (int)Tile.PineTree0Bottom) && (tree <= (int)Tile.PineTree2Bottom)) ||
+			((tree >= (int)Tile.TreeDead0Bottom) && (tree <= (int)Tile.TreeDead2Bottom)) ||
+			((tree >= (int)Tile.TreeStone0Bottom) && (tree <= (int)Tile.TreeStone2Bottom)))
+		{
+			return true;
+		}
+		return false;
 	}
 	public override bool IsDoorOpen(int index)
 	{
@@ -3610,7 +3653,7 @@ public partial class TownTileMap : TileMap
 						continue;
 					if (isBlocked)
 					{
-						if (Blocked((int)mx, (int)my))
+						if (Blocked((int)mx, (int)my, true))
 						{
 							newStart = rSlope;
 							continue;
@@ -3621,7 +3664,7 @@ public partial class TownTileMap : TileMap
 							start = newStart;
 						}
 					}
-					else if (Blocked((int)mx, (int)my) && (radius < maxRadius))
+					else if (Blocked((int)mx, (int)my, true) && (radius < maxRadius))
 					{
 						isBlocked = true;
 						EmitLightFromRecursive(x, y, i + 1, maxRadius, start, lSlope, xx, xy, yx, yy);
