@@ -3419,11 +3419,10 @@ public partial class TownTileMap : TileMap
 	public override void ToggleDoor(Vector2 p)
 	{
 		var index = TileIndex(p);
-		if (IsDoor(index))
-		{
-			var shut = IsDoorShut(index);
-			SetTile((int)Layer.Fore, index, shut ? (int)Tile.DoorOpen : (int)Tile.DoorShut);
-		}
+		if (IsDoorShut(index))
+			SetTile((int)Layer.Fore, index, (int)Tile.DoorOpen);
+		else if (IsDoorOpen(index))
+			SetTile((int)Layer.Fore, index, (int)Tile.DoorOpen);
 	}
 	public override bool IsStairDown(int index)
 	{
