@@ -154,7 +154,7 @@ namespace ca.HenrySoftware.Rage
 				Destroy(_t.GetChild(i).gameObject);
 			}
 		}
-		public virtual void LoadXml(string text)
+		public virtual void LoadTmx(string text)
 		{
 			var xml = new XmlDocument();
 			xml.LoadXml(text);
@@ -177,14 +177,10 @@ namespace ca.HenrySoftware.Rage
 				}
 			}
 			Load();
-			var p = new Vector3(State.X, State.Y, -LayerOffset * 2);
-			Manager.Instance.Character.transform.localPosition = p;
-			Manager.Instance.PathFinder.SetupMap();
-			Manager.Instance.PathFinder.ReachableFrom(p);
 		}
-		public void Load(string json)
+		public void LoadJson(string text)
 		{
-			JsonUtility.FromJsonOverwrite(json, State);
+			JsonUtility.FromJsonOverwrite(text, State);
 			Build(State);
 			Load();
 		}

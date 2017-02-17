@@ -54,7 +54,7 @@ namespace ca.HenrySoftware.Rage
 				var path = EditorUtility.OpenFilePanel("Load map...", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "tmx");
 				if (!string.IsNullOrEmpty(path))
 				{
-					element.LoadXml(File.ReadAllText(path));
+					element.LoadTmx(File.ReadAllText(path));
 				}
 			}
 			if (GUILayout.Button("Clear"))
