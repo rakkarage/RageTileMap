@@ -754,6 +754,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Path: []
+  SortingOrder: 7
   Map: {fileID: 1521324645}
 --- !u!114 &1704470579
 MonoBehaviour:

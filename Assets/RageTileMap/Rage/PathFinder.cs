@@ -25,6 +25,7 @@ namespace ca.HenrySoftware.Rage
 		PathNode _finish;
 		PathNode _current;
 		public List<Vector2> Path;
+		public int SortingOrder = 1;
 		Pool _pool;
 		public TileMap Map;
 		int _opacityStep = 0;
@@ -141,7 +142,7 @@ namespace ca.HenrySoftware.Rage
 			{
 				for (var xx = x - r; xx <= x + r; xx++)
 				{
-					if (((yy == y - r) || (xx == x - r) || (yy == y + r) || (xx == x + r)) && Map.InsideMap(xx, yy))
+					if (((yy == y - r) || (xx == x - r) || (yy == y + r) || (xx == x + r)) && Map.InsideEdge(xx, yy))
 					{
 						var index = Map.TileIndex(xx, yy);
 						var node = _map[index];
@@ -187,7 +188,7 @@ namespace ca.HenrySoftware.Rage
 				{
 					for (var xx = current.X - 1; xx <= current.X + 1; xx++)
 					{
-						if ((yy != current.Y || xx != current.X) && Map.InsideMap(xx, yy))
+						if ((yy != current.Y || xx != current.X) && Map.InsideEdge(xx, yy))
 						{
 							var index = Map.TileIndex(xx, yy);
 							var node = _map[index];
@@ -206,7 +207,7 @@ namespace ca.HenrySoftware.Rage
 			{
 				for (var x = _current.X - 1; x <= _current.X + 1; x++)
 				{
-					if ((y != _current.Y || x != _current.X) && Map.InsideMap(x, y))
+					if ((y != _current.Y || x != _current.X) && Map.InsideEdge(x, y))
 					{
 						var index = Map.TileIndex(x, y);
 						var finish = (index == _finish.TileIndex);
@@ -301,6 +302,7 @@ namespace ca.HenrySoftware.Rage
 				var sr = o.GetComponent<SpriteRenderer>();
 				var opacity = (((i * _opacityStep) + _opacityStart) / 255f);
 				sr.color = color.SetAlpha(opacity);
+				sr.sortingOrder = SortingOrder;
 			}
 		}
 		GameObject EnterPath()
