@@ -26,6 +26,10 @@ New:
 
 Graphics:
 - <https://henrysoftware.itch.io/pixel-level-free>
+- <https://henrysoftware.itch.io/pixel-level>
+
+Interactive WebGL Demo:
+- <https://henrysoftware.itch.io/rage-tile-map>
 
 Credits:
 - Thanks mizipzor! https://github.com/mizipzor/UnityTileMap
