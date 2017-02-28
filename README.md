@@ -34,7 +34,7 @@ Graphics:
 - <https://henrysoftware.itch.io/pixel-level-free>
 - <https://henrysoftware.itch.io/pixel-level>
 
-WebGL Demo:
+Interactive WebGL Demo:
 
 - <https://henrysoftware.itch.io/rage-tile-map>
 
