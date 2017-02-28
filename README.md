@@ -1,15 +1,20 @@
-### RageTileMap
+# RageTileMap
 
-	+-+-+
-	|2|3|
-	+-+-+
-	|0|1|
-	+-+-+
-	index = y * width + x
-	
-A **simple** tile map using unity and csharp.
+![RageTileMap](RageTileMap.png)
+
+    +-+-+
+    |2|3|
+    +-+-+
+    |0|1|
+    +-+-+
+    index = y * width + x
+
+A simple tile map using unity and csharp.
+
+It works by indexing tiles in a sprite sheet using an enum.
 
 Features:
+
 - Create maps with code or custom editor.
 - Flip and rotate tiles.
 - Animate tiles.
@@ -25,8 +30,15 @@ New:
 - Oriented and stretched background.
 
 Graphics:
+
 - <https://henrysoftware.itch.io/pixel-level-free>
+- <https://henrysoftware.itch.io/pixel-level>
+
+WebGL Demo:
+
+- <https://henrysoftware.itch.io/rage-tile-map>
 
 Credits:
+
 - Thanks mizipzor! https://github.com/mizipzor/UnityTileMap
 - Thanks quill18creates! https://www.youtube.com/playlist?list=PLbghT7MmckI4qGA0Wm_TZS8LVrqS47I9R
