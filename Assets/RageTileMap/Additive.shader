@@ -10,10 +10,10 @@
 	SubShader
 	{
 		Tags
-		{ 
-			"Queue"="Transparent" 
-			"IgnoreProjector"="True" 
-			"RenderType"="Transparent" 
+		{
+			"Queue"="Transparent"
+			"IgnoreProjector"="True"
+			"RenderType"="Transparent"
 			"PreviewType"="Plane"
 			"CanUseSpriteAtlas"="True"
 		}
@@ -31,7 +31,7 @@
 			#pragma fragment frag
 			#pragma multi_compile DUMMY PIXELSNAP_ON
 			#include "UnityCG.cginc"
-			
+
 			struct appdata_t
 			{
 				float4 vertex   : POSITION;
@@ -45,13 +45,13 @@
 				fixed4 color    : COLOR;
 				half2 texcoord  : TEXCOORD0;
 			};
-			
+
 			fixed4 _Color;
 
 			v2f vert(appdata_t IN)
 			{
 				v2f OUT;
-				OUT.vertex = mul(UNITY_MATRIX_MVP, IN.vertex);
+				OUT.vertex = UnityObjectToClipPos(IN.vertex);
 				OUT.texcoord = IN.texcoord;
 				OUT.color = IN.color * _Color;
 				#ifdef PIXELSNAP_ON
