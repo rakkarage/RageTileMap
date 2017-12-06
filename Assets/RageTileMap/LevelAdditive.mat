@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Additive
+  m_Name: LevelAdditive
   m_Shader: {fileID: 4800000, guid: 78c70865c59e2c84b8a5db2a64df486d, type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA PIXELSNAP_ON
   m_LightmapFlags: 5
@@ -19,7 +19,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 8495bd4d268f2634a8be23c7c6a4b897, type: 3}
+        m_Texture: {fileID: 2800000, guid: 35622814715bc6b4b81f2774ddf1eb78, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
