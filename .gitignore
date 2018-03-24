@@ -3,6 +3,7 @@ Temp/
 Obj/
 Library/
 Roslyn/
+AssetStoreTools*
 UnityVS*
 .vs/
 .vscode/
