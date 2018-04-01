@@ -6,6 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/RageTileMap/Intro.unity
+    path: Assets/PixelLevels/Scene/Intro.unity
+    guid: 1b93825cddd3edd48af35c4625e01ecc
   - enabled: 1
-    path: Assets/RageTileMap/TestTown.unity
+    path: Assets/PixelLevels/Scene/TestTown.unity
+    guid: fe0c8487654144f4da450119ebcd4ae7

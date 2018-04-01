@@ -64,7 +64,7 @@ namespace ca.HenrySoftware.Rage
 			{
 				EditorGUILayout.HelpBox("In Scene View: Left Button: Draw, Right Button: Erase", MessageType.Info);
 				_layer = EditorGUILayout.IntSlider("Layer", _layer, 0, element.LayerNames.Count - 1);
-				_flags = (TileFlags)EditorGUILayout.EnumFlagsField("Flags", _flags);
+				_flags = (TileFlags)EditorGUILayout.EnumMaskField("Flags", _flags);
 				_randomFlags = EditorGUILayout.Toggle("Random Flags", _randomFlags);
 				_fill = EditorGUILayout.Toggle("Fill", _fill);
 				_tiles = EditorGUILayout.Foldout(_tiles, "Tile Sheet");
