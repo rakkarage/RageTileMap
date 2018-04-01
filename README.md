@@ -40,5 +40,5 @@ Interactive WebGL Demo:
 
 Credits:
 
-- Thanks mizipzor! https://github.com/mizipzor/UnityTileMap
-- Thanks quill18creates! https://www.youtube.com/playlist?list=PLbghT7MmckI4qGA0Wm_TZS8LVrqS47I9R
+- Thanks mizipzor! <https://github.com/mizipzor/UnityTileMap>
+- Thanks quill18creates! <https://www.youtube.com/playlist?list=PLbghT7MmckI4qGA0Wm_TZS8LVrqS47I9R>
