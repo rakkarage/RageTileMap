@@ -51,4 +51,6 @@ PixelLevels/Visual/Sprite/TargetBack.png : target selection background
 PixelLevels/Visual/Sprite/TargetFore.png : target selection foreground
 PixelLevels/Visual/Additive.mat : additive blend mode sometimes looks better with transparent sprites
 PixelLevels/Visual/Additive.shader : this is just the built in sprite shader copied and changed to "Blend SrcAlpha One"
+PixelLevels/Visual/Free.mat : material for use with Free levels
+PixelLevels/Visual/Level.mat : material for use with Level levels
 PixelLevels/ReadMe.txt : this
