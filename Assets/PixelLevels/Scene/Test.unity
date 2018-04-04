@@ -137,14 +137,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75241c3ea08d29f42b154f1d2ee3fb81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sheet: {fileID: 21300000, guid: 8495bd4d268f2634a8be23c7c6a4b897, type: 3}
+  Sheet: {fileID: 21300000, guid: fd2bdf968b9ede148ae3f9d49e71b302, type: 3}
   LayerOffset: 0.1
   LayerNames:
   - Back
   - Fore
   - Light
   LayerMaterials:
-  - {fileID: 2100000, guid: 54bb32eab2da9e14f97af4996fe7515b, type: 2}
+  - {fileID: 2100000, guid: e39fef54ff41c274498691ccee74bc95, type: 2}
   State:
     X: 2
     Y: 2
