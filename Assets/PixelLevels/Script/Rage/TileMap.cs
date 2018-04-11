@@ -11,7 +11,7 @@ namespace ca.HenrySoftware.Rage
 	public enum TileFlags
 	{
 		Nothing = 0,
-		FlipX = (1 << 0),
+		FlipX = 1,
 		FlipY = (1 << 1),
 		Rot90 = (1 << 2),
 	}
