@@ -994,31 +994,31 @@ TextureImporter:
     second: ThemeBF10
   - first:
       213: 21300660
-    second: ThemeBF12
+    second: ThemeBF11
   - first:
       213: 21300662
-    second: ThemeBF13
+    second: ThemeBF12
   - first:
       213: 21300664
-    second: ThemeBF14
+    second: ThemeBF13
   - first:
       213: 21300666
-    second: ThemeBF15
+    second: ThemeBF14
   - first:
       213: 21300668
-    second: ThemeBF16
+    second: ThemeBF15
   - first:
       213: 21300670
-    second: ThemeBF17
+    second: ThemeBF16
   - first:
       213: 21300672
-    second: ThemeBF18
+    second: ThemeBF17
   - first:
       213: 21300674
-    second: ThemeBF19
+    second: ThemeBF18
   - first:
       213: 21300676
-    second: ThemeBF20
+    second: ThemeBF19
   - first:
       213: 21300678
     second: ThemeBF20
@@ -3604,7 +3604,7 @@ TextureImporter:
     second: SpellFire4
   - first:
       213: 21302400
-    second: ShopSign
+    second: Shop
   - first:
       213: 21302402
     second: ShopSign
@@ -6178,22 +6178,22 @@ TextureImporter:
     second: FogLightForeA1
   - first:
       213: 21304116
-    second: FogLightForeA1
-  - first:
-      213: 21304118
     second: FogLightForeA2
   - first:
-      213: 21304120
+      213: 21304118
     second: FogLightForeA3
   - first:
-      213: 21304122
+      213: 21304120
     second: FogLightForeA4
   - first:
-      213: 21304124
+      213: 21304122
     second: FogLightForeA5
   - first:
-      213: 21304126
+      213: 21304124
     second: FogLightForeA6
+  - first:
+      213: 21304126
+    second: FogLightForeA7
   - first:
       213: 21304128
     second: LavaF0
@@ -6355,7 +6355,7 @@ TextureImporter:
     second: LavaG13
   - first:
       213: 21304234
-    second: LavaG15
+    second: LavaG14
   - first:
       213: 21304236
     second: LavaG15
@@ -6388,28 +6388,28 @@ TextureImporter:
     second: TownGridB8
   - first:
       213: 21304256
-    second: FogLightBackC0
+    second: FogLightForeC0
   - first:
       213: 21304258
-    second: FogLightBackC1
+    second: FogLightForeC1
   - first:
       213: 21304260
-    second: FogLightBackC2
+    second: FogLightForeC2
   - first:
       213: 21304262
-    second: FogLightBackC3
+    second: FogLightForeC3
   - first:
       213: 21304264
-    second: FogLightBackC4
+    second: FogLightForeC4
   - first:
       213: 21304266
-    second: FogLightBackC5
+    second: FogLightForeC5
   - first:
       213: 21304268
-    second: FogLightBackC6
+    second: FogLightForeC6
   - first:
       213: 21304270
-    second: FogLightBackC7
+    second: FogLightForeC7
   - first:
       213: 21304272
     second: FogLightBackC0
@@ -6841,10 +6841,10 @@ TextureImporter:
     second: DesertGrassShortForeNight
   - first:
       213: 21304558
-    second: DesertGrassShortBackNight
+    second: GrassShortBackNight
   - first:
       213: 21304560
-    second: DesertGrassShortForeNight
+    second: GrassShortForeNight
   - first:
       213: 21304562
     second: TargetB0
@@ -14591,7 +14591,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ThemeBF12
+      name: ThemeBF11
       rect:
         serializedVersion: 2
         x: 640
@@ -14612,7 +14612,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ThemeBF13
+      name: ThemeBF12
       rect:
         serializedVersion: 2
         x: 656
@@ -14633,7 +14633,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ThemeBF14
+      name: ThemeBF13
       rect:
         serializedVersion: 2
         x: 672
@@ -14654,7 +14654,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ThemeBF15
+      name: ThemeBF14
       rect:
         serializedVersion: 2
         x: 688
@@ -14675,7 +14675,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ThemeBF16
+      name: ThemeBF15
       rect:
         serializedVersion: 2
         x: 704
@@ -14696,7 +14696,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ThemeBF17
+      name: ThemeBF16
       rect:
         serializedVersion: 2
         x: 720
@@ -14717,7 +14717,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ThemeBF18
+      name: ThemeBF17
       rect:
         serializedVersion: 2
         x: 736
@@ -14738,7 +14738,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ThemeBF19
+      name: ThemeBF18
       rect:
         serializedVersion: 2
         x: 752
@@ -14762,7 +14762,7 @@ TextureImporter:
       name: ThemeBF20
       rect:
         serializedVersion: 2
-        x: 768
+        x: 784
         y: 928
         width: 16
         height: 16
@@ -32864,7 +32864,7 @@ TextureImporter:
       name: ShopSign
       rect:
         serializedVersion: 2
-        x: 608
+        x: 624
         y: 576
         width: 16
         height: 16
@@ -50858,28 +50858,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: FogLightForeA1
-      rect:
-        serializedVersion: 2
-        x: 144
-        y: 224
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 23315410000000000800000000000000
-      internalID: 21304114
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: FogLightForeA1
+      name: FogLightForeA2
       rect:
         serializedVersion: 2
         x: 160
@@ -50903,6 +50882,27 @@ TextureImporter:
       name: FogLightForeA2
       rect:
         serializedVersion: 2
+        x: 160
+        y: 224
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23315410000000000800000000000000
+      internalID: 21304114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FogLightForeA3
+      rect:
+        serializedVersion: 2
         x: 176
         y: 224
         width: 16
@@ -50921,7 +50921,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: FogLightForeA3
+      name: FogLightForeA4
       rect:
         serializedVersion: 2
         x: 192
@@ -50942,7 +50942,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: FogLightForeA4
+      name: FogLightForeA5
       rect:
         serializedVersion: 2
         x: 208
@@ -50963,7 +50963,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: FogLightForeA5
+      name: FogLightForeA6
       rect:
         serializedVersion: 2
         x: 224
@@ -50984,7 +50984,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: FogLightForeA6
+      name: FogLightForeA7
       rect:
         serializedVersion: 2
         x: 240
@@ -52121,7 +52121,7 @@ TextureImporter:
       name: LavaG15
       rect:
         serializedVersion: 2
-        x: 480
+        x: 496
         y: 208
         width: 16
         height: 16
@@ -52352,7 +52352,7 @@ TextureImporter:
       name: FogLightBackC0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 128
         y: 192
         width: 16
         height: 16
@@ -52373,7 +52373,7 @@ TextureImporter:
       name: FogLightBackC1
       rect:
         serializedVersion: 2
-        x: 16
+        x: 144
         y: 192
         width: 16
         height: 16
@@ -52394,7 +52394,7 @@ TextureImporter:
       name: FogLightBackC2
       rect:
         serializedVersion: 2
-        x: 32
+        x: 160
         y: 192
         width: 16
         height: 16
@@ -52415,7 +52415,7 @@ TextureImporter:
       name: FogLightBackC3
       rect:
         serializedVersion: 2
-        x: 48
+        x: 176
         y: 192
         width: 16
         height: 16
@@ -52436,7 +52436,7 @@ TextureImporter:
       name: FogLightBackC4
       rect:
         serializedVersion: 2
-        x: 64
+        x: 192
         y: 192
         width: 16
         height: 16
@@ -52457,7 +52457,7 @@ TextureImporter:
       name: FogLightBackC5
       rect:
         serializedVersion: 2
-        x: 80
+        x: 208
         y: 192
         width: 16
         height: 16
@@ -52478,7 +52478,7 @@ TextureImporter:
       name: FogLightBackC6
       rect:
         serializedVersion: 2
-        x: 96
+        x: 224
         y: 192
         width: 16
         height: 16
@@ -52499,7 +52499,7 @@ TextureImporter:
       name: FogLightBackC7
       rect:
         serializedVersion: 2
-        x: 112
+        x: 240
         y: 192
         width: 16
         height: 16
@@ -55478,49 +55478,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DesertGrassShortBackNight
-      rect:
-        serializedVersion: 2
-        x: 688
-        y: 144
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ae415410000000000800000000000000
-      internalID: 21304554
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: DesertGrassShortForeNight
-      rect:
-        serializedVersion: 2
-        x: 704
-        y: 144
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ce415410000000000800000000000000
-      internalID: 21304556
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: DesertGrassShortBackNight
+      name: GrassShortBackNight
       rect:
         serializedVersion: 2
         x: 752
@@ -55541,7 +55499,49 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DesertGrassShortForeNight
+      name: GrassShortForeNight
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 144
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce415410000000000800000000000000
+      internalID: 21304556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GrassShortBackNight
+      rect:
+        serializedVersion: 2
+        x: 752
+        y: 144
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae415410000000000800000000000000
+      internalID: 21304554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GrassShortForeNight
       rect:
         serializedVersion: 2
         x: 768
@@ -60352,7 +60352,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 69962eb7d07613f469381fb54147f8c7
     internalID: 0
     vertices: []
     indices: 
